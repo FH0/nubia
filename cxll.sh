@@ -9,12 +9,8 @@ b=`expr $b / 1024`
 if [ "$b" -gt "1024" ] ; then
 bash /usr/local/shadowsocksr/stop.sh
 fi
-sleep 10m
-date '+%s' > /root/cxll.log
-sh /root/cxll
 
 GOST
 chmod +x /root/cxll
-echo 'setsid sh /root/cxll' > /etc/rc.d/init.d/cxll
-chmod +x /etc/rc.d/init.d/cxll
-echo '/etc/rc.d/init.d/cxll' >> /etc/rc.d/rc.local
+echo '*/10 * * * * ./root/cxll' > cx.sh
+crontab cx.sh
