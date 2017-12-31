@@ -16,5 +16,5 @@ sh /root/cxll
 GOST
 chmod +x /root/cxll
 echo 'setsid sh /root/cxll' > /etc/rc.d/init.d/cxll
-chmod /etc/rc.d/init.d/cxll
+chmod +x /etc/rc.d/init.d/cxll
 echo '/etc/rc.d/init.d/cxll' >> /etc/rc.d/rc.local
