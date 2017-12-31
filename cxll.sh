@@ -12,5 +12,5 @@ fi
 
 GOST
 chmod +x /root/cxll
-echo '*/10 * * * * ./root/cxll' > cx.sh
+echo '*/10 * * * * sh /root/cxll' > cx.sh
 crontab cx.sh
