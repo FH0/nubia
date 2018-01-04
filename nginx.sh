@@ -25,3 +25,4 @@ http {
 }' > /usr/local/webserver/nginx/conf/nginx.conf
 /usr/local/webserver/nginx/sbin/nginx
 chmod 777 -R /accept
+chmod 777 -R /home
