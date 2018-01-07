@@ -2,12 +2,6 @@
 wget https://raw.githubusercontent.com/FH0/nubia/master/first_set.sh
 bash first_set.sh
 
-#set ssr
-wget https://raw.githubusercontent.com/FH0/nubia/master/ssr.sh
-bash ssr.sh
-wget https://raw.githubusercontent.com/FH0/nubia/master/cxll.sh
-bash cxll.sh
-
 #set nginx
 wget https://raw.githubusercontent.com/FH0/nubia/master/nginx.sh;bash nginx.sh
 
@@ -38,3 +32,9 @@ zxc
 EOF
 usermod -s /sbin/nologin ftpuser
 usermod -d /mnt ftpuser
+
+#set ssr
+wget https://raw.githubusercontent.com/FH0/nubia/master/ssr.sh
+bash ssr.sh
+wget https://raw.githubusercontent.com/FH0/nubia/master/cxll.sh
+bash cxll.sh
