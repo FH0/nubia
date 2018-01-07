@@ -1,3 +1,4 @@
+mkdir /accept/f/
 cat > /root/cxll <<'GOST'
 python /usr/local/SSR-Bash-Python/show_flow.py > /root/cx.txt
 a=`sed -n '2p' /root/cx.txt | grep -Eo '[0-9]+MB' | grep -Eo '[0-9]+'`
@@ -9,7 +10,7 @@ b=`expr $b / 1024`
 if [ "$b" -gt "1024" ] ; then
 bash /usr/local/shadowsocksr/stop.sh
 fi
-
+echo $b > /accept/f/ll.log
 GOST
 chmod +x /root/cxll
 echo '*/10 * * * * sh /root/cxll' > cx.sh
