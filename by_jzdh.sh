@@ -2,9 +2,6 @@
 wget https://raw.githubusercontent.com/FH0/nubia/master/first_set.sh
 bash first_set.sh
 
-#set nginx
-wget https://raw.githubusercontent.com/FH0/nubia/master/nginx.sh;bash nginx.sh
-
 #set vsftpd
 yum install -y vsftpd
 echo 'anonymous_enable=YES
@@ -32,6 +29,9 @@ zxc
 EOF
 usermod -s /sbin/nologin ftpuser
 usermod -d /mnt ftpuser
+
+#set nginx
+wget https://raw.githubusercontent.com/FH0/nubia/master/nginx.sh;bash nginx.sh
 
 #set ssr
 wget https://raw.githubusercontent.com/FH0/nubia/master/ssr.sh
