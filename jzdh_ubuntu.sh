@@ -25,7 +25,7 @@ http {
         autoindex_exact_size off;
         }
 }' > /etc/nginx/nginx.conf
-/etc/init.d/nginx
+/etc/init.d/nginx start
 
 #set vsftpd
 mkdir /home/f
