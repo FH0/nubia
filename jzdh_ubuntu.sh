@@ -26,6 +26,7 @@ http {
 }' > /etc/nginx/nginx.conf
 
 #set vsftpd
+mkdir /home/f
 echo 'anonymous_enable=YES
 local_enable=YES
 write_enable=YES
@@ -37,7 +38,8 @@ xferlog_std_format=YES
 listen=YES
 pam_service_name=vsftpd
 tcp_wrappers=YES
-chroot_local_user=yes' > /etc/vsftpd.conf
+chroot_local_user=yes
+local_root=/home/f' > /etc/vsftpd.conf
 ln -s /home/f/ /accept/
 chmod -R 777 /accept
 chmod -R 777 /home
@@ -48,6 +50,7 @@ zxc
 EOF
 usermod -s /sbin/nologin f
 usermod -d /mnt f
+service vsftpd start
 
 #set ssr
 wget https://raw.githubusercontent.com/FH0/nubia/master/ssrmu.zip
