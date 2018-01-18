@@ -63,12 +63,12 @@ service vsftpd restart
 #set ssr
 wget https://raw.githubusercontent.com/FH0/nubia/master/ssrmu.zip
 unzip ssrmu.zip
+cat ssrmu.sh > /bin/doub
+chmod +x /bin/doub
 bash ssrmu_80.sh
 bash ssrmu_8080.sh
 bash ssrmu_53.sh
 bash gost.sh
-cat ssrmu.sh > /bin/doub
-chmod +x /bin/doub
 rm -rf ssrmu*
 rm -f gost.sh
 
@@ -80,3 +80,6 @@ nohup /usr/local/gost/gostproxy -C /usr/local/gost/gost.json >/dev/null 2>&1 &' 
 chmod 755 /etc/init.d/jzdh
 chmod +x /etc/init.d/jzdh
 sysv-rc-conf jzdh on
+rm -rf ssrmu*
+rm -f gost.sh
+reboot
