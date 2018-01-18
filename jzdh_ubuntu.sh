@@ -7,6 +7,7 @@ chmod 700 /root/.ssh/authorized_keys
 
 #set nginx
 mkdir /accept
+cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 echo 'worker_processes  1;
 events {
     worker_connections  1024;
@@ -27,30 +28,36 @@ http {
 
 #set vsftpd
 mkdir /home/f
-echo 'anonymous_enable=YES
+cp /etc/vsftpd.conf /etc/vsftpd.conf.bak
+echo 'listen=YES
+anonymous_enable=NO
 local_enable=YES
 write_enable=YES
-local_umask=022
 dirmessage_enable=YES
+use_localtime=YES
 xferlog_enable=YES
 connect_from_port_20=YES
-xferlog_std_format=YES
-listen=YES
+chroot_local_user=YES
+chroot_local_user=YES
+chroot_list_enable=YES
+chroot_list_file=/etc/vsftpd.chroot_list
+secure_chroot_dir=/var/run/vsftpd/empty
 pam_service_name=vsftpd
-tcp_wrappers=YES
-chroot_local_user=yes
-local_root=/home/f' > /etc/vsftpd.conf
-ln -s /home/f/ /accept/
-chmod -R 777 /accept
-chmod -R 777 /home
-useradd f
+rsa_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
+rsa_private_key_file=/etc/ssl/private/ssl-cert-snakeoil.key' > /etc/vsftpd.conf
+echo f > /etc/vsftpd.chroot_list
+useradd -d /home/f -s /sbin/nologin f
 passwd f << EOF
 zxc
 zxc
 EOF
-usermod -s /sbin/nologin f
-usermod -d /mnt f
-service vsftpd start
+chown -R f.f /home/f
+sed -i '/nologin/d' /etc/shells
+echo /sbin/nologin >> /etc/shells
+ln -s /home/f/ /accept/
+chmod -R 777 /accept
+chmod -R 777 /home
+service vsftpd restart
 
 #set ssr
 wget https://raw.githubusercontent.com/FH0/nubia/master/ssrmu.zip
