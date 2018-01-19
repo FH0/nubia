@@ -1,5 +1,5 @@
 #!/bin/bash
-apt-get update -y;apt upgrade -y;apt-get install wget unzip nginx vsftpd sysv-rc-conf screen -y
+apt-get update -y;apt-get install wget unzip nginx vsftpd sysv-rc-conf screen -y
 mkdir /root/.ssh
 echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+W9dthEI7Z113Sd9Vr3ZMhSSRIr80wX05OV/T8oVWIILAPT7COvaU4KTCx+j4heQunzlvQ1egvmP4WPRU1fJDI00LBdzdUyKrX/Uo/NebHyr1Snz8aDFq/6+uyl4a/xnE/nRCvnSUsATuKDOAlOlII9voCmo20Fi8HNPUl0vUbXpbison3Tjinn7Qc+J2+Sh49lmDT3tjDrRc+PdAVLfAMynw9HgIareZvdfrekZ3HDy2MS10I5SlkmIkevL12pek3BrOxLITwQ5T0COTvrlEqmzGVqocUP7sKFQM5wZ70r0h7DhyCb2/1uKXyee+lgWcFr9VOna3HPVFGq/vChId u0_a86@localhost' > /root/.ssh/authorized_keys
 chmod 700 /root/.ssh/authorized_keys
