@@ -1,9 +1,10 @@
 #!/bin/bash
-apt-get update
-apt-get install wget unzip nginx vsftpd sysv-rc-conf -y
+apt-get update -y;apt upgrade -y;apt-get install wget unzip nginx vsftpd sysv-rc-conf screen -y
 mkdir /root/.ssh
 echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+W9dthEI7Z113Sd9Vr3ZMhSSRIr80wX05OV/T8oVWIILAPT7COvaU4KTCx+j4heQunzlvQ1egvmP4WPRU1fJDI00LBdzdUyKrX/Uo/NebHyr1Snz8aDFq/6+uyl4a/xnE/nRCvnSUsATuKDOAlOlII9voCmo20Fi8HNPUl0vUbXpbison3Tjinn7Qc+J2+Sh49lmDT3tjDrRc+PdAVLfAMynw9HgIareZvdfrekZ3HDy2MS10I5SlkmIkevL12pek3BrOxLITwQ5T0COTvrlEqmzGVqocUP7sKFQM5wZ70r0h7DhyCb2/1uKXyee+lgWcFr9VOna3HPVFGq/vChId u0_a86@localhost' > /root/.ssh/authorized_keys
 chmod 700 /root/.ssh/authorized_keys
+echo >> /etc/profile
+echo clear >> /etc/profile
 
 #set nginx
 mkdir /accept
@@ -53,33 +54,33 @@ zxc
 zxc
 EOF
 chown -R f.f /home/f
-sed -i '/nologin/d' /etc/shells
-echo /sbin/nologin >> /etc/shells
-ln -s /home/f/ /accept/
-chmod -R 777 /accept
-chmod -R 777 /home
+sed -i '/nologin/d' /etc/shells;echo /sbin/nologin >> /etc/shells
+ln -s /home/f/ /accept/;chmod -R 777 /accept;chmod -R 777 /home
 service vsftpd restart
 
 #set ssr
-wget https://raw.githubusercontent.com/FH0/nubia/master/ssrmu.zip
-unzip ssrmu.zip
-cat ssrmu.sh > /bin/doub
-chmod +x /bin/doub
-bash ssrmu_80.sh
-bash ssrmu_8080.sh
-bash ssrmu_53.sh
-bash gost.sh
-rm -rf ssrmu*
-rm -f gost.sh
+wget https://raw.githubusercontent.com/FH0/nubia/master/ssr.zip;unzip ssr.zip;cd SSR*;bash ins*
+cd /usr/local/shadowsocksr
+python mujson_mgr.py -a -u 1 -p 80 -k 239 -m aes-128-ctr -O auth_sha1_v4 -o http_simple -t 700 -G 10
+python mujson_mgr.py -a -u 2 -p 8080 -k 239 -m aes-128-ctr -O auth_sha1_v4 -o http_simple -t 70 -G 3
+python mujson_mgr.py -a -u 3 -p 53 -k 239 -m aes-128-ctr -O auth_sha1_v4 -o http_simple -t 70 -G 3
+wget https://raw.githubusercontent.com/FH0/nubia/master/cxll.sh;bash cxll.sh
 
 #start when boot
 echo '#!/bin/bash
 /etc/init.d/nginx
-service vsftpd start
-nohup /usr/local/gost/gostproxy -C /usr/local/gost/gost.json >/dev/null 2>&1 &' > /etc/init.d/jzdh
-chmod 755 /etc/init.d/jzdh
-chmod +x /etc/init.d/jzdh
+service vsftpd start' > /etc/init.d/jzdh
+chmod 755 /etc/init.d/jzdh;chmod +x /etc/init.d/jzdh
 sysv-rc-conf jzdh on
-rm -rf ssrmu*
-rm -f gost.sh
+
+#set up ssr passwd
+cat > /bin/csp << eof
+#!/bin/bash
+cd /usr/local/shadowsocksr
+python mujson_mgr.py -e -p 53 -k $3
+python mujson_mgr.py -e -p 8080 -k $2
+python mujson_mgr.py -e -p 80 -k $1
+eof
+chmod +x /bin/ssrmm
+
 reboot
