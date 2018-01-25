@@ -61,12 +61,11 @@ service vsftpd restart
 #set ssr
 wget https://raw.githubusercontent.com/FH0/nubia/master/ssr.zip;unzip ssr.zip;cd SSR*;bash ins*
 cd /usr/local/shadowsocksr
-python mujson_mgr.py -a -u 1 -p 80 -k 239 -m aes-128-ctr -O auth_sha1_v4 -o http_simple -t 700 -G 10
-python mujson_mgr.py -a -u 2 -p 8080 -k 239 -m aes-128-ctr -O auth_sha1_v4 -o http_simple -t 70 -G 3
-python mujson_mgr.py -a -u 3 -p 53 -k 239 -m aes-128-ctr -O auth_sha1_v4 -o http_simple -t 70 -G 3
+python mujson_mgr.py -a -u 1 -p 80 -k 239 -m chacha20 -O auth_sha1_v4 -o http_simple -t 700 -G 10
+python mujson_mgr.py -a -u 2 -p 8080 -k 239 -m chacha20 -O auth_sha1_v4 -o http_simple -t 70 -G 3
+python mujson_mgr.py -a -u 3 -p 53 -k 239 -m chacha20 -O auth_sha1_v4 -o http_simple -t 70 -G 3
 wget https://raw.githubusercontent.com/FH0/nubia/master/cxll.sh;bash cxll.sh
-bash /usr/local/shadowsocksr/logrun.sh
-	
+
 #start when boot
 echo '#!/bin/bash
 /etc/init.d/nginx
@@ -75,12 +74,13 @@ chmod 755 /etc/init.d/jzdh;chmod +x /etc/init.d/jzdh
 sysv-rc-conf jzdh on
 
 #set up ssr passwd
-echo '#!/bin/bash
+cat > /bin/csp << eof
+#!/bin/bash
 cd /usr/local/shadowsocksr
 python mujson_mgr.py -e -p 53 -k $3
 python mujson_mgr.py -e -p 8080 -k $2
 python mujson_mgr.py -e -p 80 -k $1
-bash /usr/local/shadowsocksr/logrun.sh' > /bin/csp
-chmod +x /bin/csp
+eof
+chmod +x /bin/ssrmm
 
 reboot
