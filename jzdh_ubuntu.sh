@@ -64,6 +64,7 @@ cd /usr/local/shadowsocksr
 python mujson_mgr.py -a -u 1 -p 80 -k 239 -m chacha20 -O auth_sha1_v4 -o http_simple -t 700 -G 10
 python mujson_mgr.py -a -u 2 -p 8080 -k 239 -m chacha20 -O auth_sha1_v4 -o http_simple -t 70 -G 3
 python mujson_mgr.py -a -u 3 -p 53 -k 239 -m chacha20 -O auth_sha1_v4 -o http_simple -t 70 -G 3
+bash /usr/local/shadowsocksr/logrun.sh
 wget https://raw.githubusercontent.com/FH0/nubia/master/cxll.sh;bash cxll.sh
 
 #start when boot
