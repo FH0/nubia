@@ -74,14 +74,4 @@ service vsftpd start' > /etc/init.d/jzdh
 chmod 755 /etc/init.d/jzdh;chmod +x /etc/init.d/jzdh
 sysv-rc-conf jzdh on
 
-#set up ssr passwd
-cat > /bin/csp << eof
-#!/bin/bash
-cd /usr/local/shadowsocksr
-python mujson_mgr.py -e -p 53 -k $3
-python mujson_mgr.py -e -p 8080 -k $2
-python mujson_mgr.py -e -p 80 -k $1
-eof
-chmod +x /bin/csp
-
 reboot
