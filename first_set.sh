@@ -1,5 +1,0 @@
-#linux first setting
-mkdir /root/.ssh
-echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKI10mIKFot3oarvH1VkcufTRQ+yNga74rLXOdTcdvD1FOdjyHxIxpSBx3wTAife/77FM1UxKEzAWMsKSL1Dfp25NIQwSpoABVGIUGPhcH2Zs0Utd6ECXBnblPaP38Sahe4qj+x6ZdL03+xjYQzOVnmByupLeKHBIvHwMGdhs/cYwjqJhhob/SvSN9wcpP3Qaqa1c48R1+4pIYjzHD8JWrGm+pZSJ1AhB7xTY0jPtdv5KIx1+rB6r/yqwRZYjxg9xupQW1466t23h3LqBBBTIhClf7Q2IP2GWpKOQUfqzvXGhtZXcmktDymQd8uKZIpxSqoO7mgMMypR+eK+lQfd9H root@localhost' > /root/.ssh/authorized_keys
-chmod 700 /root/.ssh/authorized_keys
-service sshd restart
