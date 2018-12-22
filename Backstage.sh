@@ -117,27 +117,27 @@ pannel() {
     
     var=0
     clear && colorEcho $BLUE "欢迎使用JZDH集合脚本"
-    ((var++)) && echo -e "  $var. 安装${ssr_status}SSR\033[0m"
-    ((var++)) && echo -e "  $var. 安装${v2ray_status}V2Ray\033[0m"
-    ((var++)) && echo -e "  $var. 安装${ssr_jzdh_status}ssr_jzdh\033[0m"
-    ((var++)) && echo -e "  $var. 安装${bbr_status}BBR\033[0m"
-    ((var++)) && echo -e "  $var. 安装${AriaNG_status}AriaNG\033[0m"
-    ((var++)) && echo -e "  $var. 安装${koolproxy_status}koolproxy\033[0m"
-    ((var++)) && echo -e "  $var. 安装${frp_status}frp\033[0m"
-    ((var++)) && echo -e "  $var. 安装${dnsmasq_status}dnsmasq去广告\033[0m"
-    ((var++)) && echo -e "  $var. 安装${swapfile_status}swap分区\033[0m"
+    ((var++)) ; echo -e "  $var. 安装${ssr_status}SSR\033[0m"
+    ((var++)) ; echo -e "  $var. 安装${v2ray_status}V2Ray\033[0m"
+    ((var++)) ; echo -e "  $var. 安装${ssr_jzdh_status}ssr_jzdh\033[0m"
+    ((var++)) ; echo -e "  $var. 安装${bbr_status}BBR\033[0m"
+    ((var++)) ; echo -e "  $var. 安装${AriaNG_status}AriaNG\033[0m"
+    ((var++)) ; echo -e "  $var. 安装${koolproxy_status}koolproxy\033[0m"
+    ((var++)) ; echo -e "  $var. 安装${frp_status}frp\033[0m"
+    ((var++)) ; echo -e "  $var. 安装${dnsmasq_status}dnsmasq去广告\033[0m"
+    ((var++)) ; echo -e "  $var. 安装${swapfile_status}swap分区\033[0m"
     echo && read -p $'\033[33m请选择: \033[0m' pannel_choice && echo
     
     var=0
-    ((var++)) && [ "$pannel_choice" = "$var" ] && install_ssr
-    ((var++)) && [ "$pannel_choice" = "$var" ] && install_zip v2ray
-    ((var++)) && [ "$pannel_choice" = "$var" ] && install_zip ssr_jzdh
-    ((var++)) && [ "$pannel_choice" = "$var" ] && [ -z "$(lsmod | grep bbr)" ] && install_bbr
-    ((var++)) && [ "$pannel_choice" = "$var" ] && install_zip AriaNG
-    ((var++)) && [ "$pannel_choice" = "$var" ] && install_zip koolproxy
-    ((var++)) && [ "$pannel_choice" = "$var" ] && install_zip frps
-    ((var++)) && [ "$pannel_choice" = "$var" ] && install_zip dnsmasq
-    ((var++)) && [ "$pannel_choice" = "$var" ] && install_zip swapfile
+    ((var++)) ; [ "$pannel_choice" = "$var" ] && install_ssr
+    ((var++)) ; [ "$pannel_choice" = "$var" ] && install_zip v2ray
+    ((var++)) ; [ "$pannel_choice" = "$var" ] && install_zip ssr_jzdh
+    ((var++)) ; [ "$pannel_choice" = "$var" ] && [ -z "$(lsmod | grep bbr)" ] && install_bbr
+    ((var++)) ; [ "$pannel_choice" = "$var" ] && install_zip AriaNG
+    ((var++)) ; [ "$pannel_choice" = "$var" ] && install_zip koolproxy
+    ((var++)) ; [ "$pannel_choice" = "$var" ] && install_zip frps
+    ((var++)) ; [ "$pannel_choice" = "$var" ] && install_zip dnsmasq
+    ((var++)) ; [ "$pannel_choice" = "$var" ] && install_zip swapfile
     exit 0
 }
 

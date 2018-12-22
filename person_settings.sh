@@ -93,4 +93,4 @@ main() {
     set_bash
 }
 
-main && clear
+main
