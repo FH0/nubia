@@ -1,10 +1,10 @@
 #!/bin/bash
 export PATH="/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin"
 
-RED="\033[31m"      # Error message
-GREEN="\033[32m"    # Success message
-YELLOW="\033[33m"   # Warning message
-BLUE="\033[36m"     # Info message
+RED="\033[31m"
+GREEN="\033[32m"
+YELLOW="\033[33m"
+BLUE="\033[36m"
 
 colorEcho(){
     COLOR=$1
@@ -73,7 +73,7 @@ install_bbr() {
         grub2-mkconfig -o /boot/grub2/grub.cfg >/dev/null 2>&1
     fi
     colorEcho $GREEN "新内核安装完成！"
-    colorEcho $YELLOW "重启系统后即可安装BBR！"
+    colorEcho ${YELLOW} "重启系统后即可安装BBR！"
     systemd_init "sed -i '/^net.core.default_qdisc=fq\$/d' /etc/sysctl.conf\nsed -i '/^net.ipv4.tcp_congestion_control=bbr\$/d' /etc/sysctl.conf\necho \"net.core.default_qdisc=fq\" >> /etc/sysctl.conf\necho \"net.ipv4.tcp_congestion_control=bbr\" >> /etc/sysctl.conf\nsysctl -p"
 }
 
