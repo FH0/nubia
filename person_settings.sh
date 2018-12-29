@@ -40,7 +40,7 @@ rc_local() {
 }
 
 set_bash() {
-    cd ~
+    cd /root
     country=$(curl -s http://ip-api.com/json | sed 's|.*"countryCode":"\(..\)".*|\1|')
     system="debian" && command -v yum >/dev/null && system="centos"
     [ -f ".bashrc" ] || touch .bashrc
@@ -51,7 +51,7 @@ set_bash() {
     sed -i '/alias/d' .bashrc
     echo 'alias ls="ls --color=auto"' >> .bashrc
     echo 'alias grep="grep --color=auto"' >> .bashrc
-    chmod 644 /root/.bashrc
+    chmod 644 .bashrc
 }
 
 language_cn() {
