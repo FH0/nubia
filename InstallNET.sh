@@ -688,7 +688,7 @@ if [[ "$linuxdists" == 'debian' ]] || [[ "$linuxdists" == 'ubuntu' ]]; then
 
     tasksel tasksel/first multiselect minimal
     d-i pkgsel/update-policy select none
-    d-i pkgsel/include string openssh-server wget curl
+    d-i pkgsel/include string openssh-server wget curl file
     d-i pkgsel/upgrade select none
 
     popularity-contest popularity-contest/participate boolean false
