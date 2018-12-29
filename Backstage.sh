@@ -35,7 +35,7 @@ systemd_init() {
     echo -e '[Unit]\nDescription=koolproxy Service\nAfter=network.target\n\n[Service]\nType=forking\nExecStart=/bin/systemd_init\n\n[Install]\nWantedBy=multi-user.target' > /etc/systemd/system/systemd_init.service
     systemctl daemon-reload
     systemctl enable systemd_init.service
-}
+} > /dev/null 2>&1
 
 install_zip(){
     key="$1"
