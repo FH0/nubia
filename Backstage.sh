@@ -54,10 +54,8 @@ install_bbr() {
         sed -i '/^net.ipv4.tcp_congestion_control=bbr$/d' /etc/sysctl.conf
         echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
         echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
-        sysctl -p >/dev/null 2>&1 && colorEcho $GREEN "BBR启动成功！" && exit 0
-    fi
-    
-    if [ -z "$(command -v yum)" ];then
+        sysctl -p >/dev/null 2>&1 && colorEcho $GREEN "BBR启动成功！"
+    elif [ -z "$(command -v yum)" ];then
         colorEcho $BLUE "正在下载4.16内核..."
         wget -N -q --no-check-certificate -O 4.16.deb http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.16/linux-image-4.16.0-041600-generic_4.16.0-041600.201804012230_amd64.deb
         colorEcho $BLUE "正在安装4.16内核..."
