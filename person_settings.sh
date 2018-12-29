@@ -43,6 +43,7 @@ set_bash() {
     cd ~
     country=$(curl -s http://ip-api.com/json | sed 's|.*"countryCode":"\(..\)".*|\1|')
     system="debian" && command -v yum >/dev/null && system="centos"
+    [ -f ".bashrc" ] || touch .bashrc
     sed -i '/^PS1/d' .bashrc
     echo -e "PS1='\\\n\\\[\\\e[47;30m\\\][$country]\\\u@$system\\\[\\\e[m\\\]:[\$(pwd)]\\\n\\\\$ '" >> .bashrc
     sed -i '/LS_COLORS/d' .bashrc
