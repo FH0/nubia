@@ -100,7 +100,7 @@ check_system() {
     fi
 }
 
-pannel() {
+panel() {
     check_system
     cmd_need 'unzip wget net-tools curl'
 
@@ -125,19 +125,19 @@ pannel() {
     ((var++)) ; echo -e "  $var. 安装${frp_status}frp\033[0m"
     ((var++)) ; echo -e "  $var. 安装${dnsmasq_status}dnsmasq去广告\033[0m"
     ((var++)) ; echo -e "  $var. 安装${swapfile_status}swap分区\033[0m"
-    echo && read -p $'\033[33m请选择: \033[0m' pannel_choice && echo
+    echo && read -p $'\033[33m请选择: \033[0m' panel_choice && echo
     
     var=0
-    ((var++)) ; [ "$pannel_choice" = "$var" ] && install_ssr
-    ((var++)) ; [ "$pannel_choice" = "$var" ] && install_zip v2ray
-    ((var++)) ; [ "$pannel_choice" = "$var" ] && install_zip ssr_jzdh
-    ((var++)) ; [ "$pannel_choice" = "$var" ] && [ -z "$(lsmod | grep bbr)" ] && install_bbr
-    ((var++)) ; [ "$pannel_choice" = "$var" ] && install_zip AriaNG
-    ((var++)) ; [ "$pannel_choice" = "$var" ] && install_zip koolproxy
-    ((var++)) ; [ "$pannel_choice" = "$var" ] && install_zip frps
-    ((var++)) ; [ "$pannel_choice" = "$var" ] && install_zip dnsmasq
-    ((var++)) ; [ "$pannel_choice" = "$var" ] && install_zip swapfile
+    ((var++)) ; [ "$panel_choice" = "$var" ] && install_ssr
+    ((var++)) ; [ "$panel_choice" = "$var" ] && install_zip v2ray
+    ((var++)) ; [ "$panel_choice" = "$var" ] && install_zip ssr_jzdh
+    ((var++)) ; [ "$panel_choice" = "$var" ] && [ -z "$(lsmod | grep bbr)" ] && install_bbr
+    ((var++)) ; [ "$panel_choice" = "$var" ] && install_zip AriaNG
+    ((var++)) ; [ "$panel_choice" = "$var" ] && install_zip koolproxy
+    ((var++)) ; [ "$panel_choice" = "$var" ] && install_zip frps
+    ((var++)) ; [ "$panel_choice" = "$var" ] && install_zip dnsmasq
+    ((var++)) ; [ "$panel_choice" = "$var" ] && install_zip swapfile
     exit 0
 }
 
-pannel
+panel
