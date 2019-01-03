@@ -14,11 +14,6 @@ ssh_key() {
     systemctl restart sshd
 }
 
-etc_profile() {
-    sed -i '/^clear$/d' /etc/profile
-    echo "clear" >> /etc/profile
-}
-
 person_bin() {
     echo -e '#!/bin/bash\niptables -t nat -S' > /bin/ins
     echo -e '#!/bin/bash\niptables -t mangle -S' > /bin/ims
@@ -35,7 +30,7 @@ rc_local() {
     echo -e '[Unit]\nDescription=/etc/rc.local\nConditionPathExists=/etc/rc.local\n\n[Service]\nType=forking\nExecStart=/etc/rc.local start\nTimeoutSec=0\nStandardOutput=tty\nRemainAfterExit=yes\nSysVStartPriority=99\n\n[Install]\nWantedBy=multi-user.target' > /etc/systemd/system/rc-local.service
     echo -e '#!/bin/sh -e\nexit 0' > /etc/rc.local
     chmod +x /etc/rc.local
-    systemctl enable rc-local
+    systemctl enable rc-local >/dev/null 2>&1
     systemctl start rc-local.service
 }
 
@@ -51,6 +46,8 @@ set_bash() {
     sed -i '/alias/d' .bashrc
     echo 'alias ls="ls --color=auto"' >> .bashrc
     echo 'alias grep="grep --color=auto"' >> .bashrc
+    sed -i '/clear/d' .bashrc
+    echo "clear" >> .bashrc
     chmod 644 .bashrc
 }
 
@@ -77,18 +74,24 @@ clean_iptables(){
 install_software(){
     if command -v apt-get;then
         apt-get update
-        apt-get install curl wget jq locales net-tools make unzip tar zip vim dnsutils -y
+        apt-get install curl wget jq locales iproute net-tools make unzip tar zip vim dnsutils -y
     elif command -v yum;then
-        yum install epel-release curl wget net-tools jq locales make unzip tar zip vim bind-utils -y
+        yum install epel-release curl wget iproute net-tools jq locales make unzip tar zip vim bind-utils -y
     fi
+} >/dev/null 2>&1
+
+clean_aliyun(){
+    for clean in $(find / -name *[Aa][Ll][Ii][Yy][Uu][Nn]*);do
+        mv $clean ${clean}_bak
+    done
 } >/dev/null 2>&1
 
 main() {
     install_software
     clean_iptables
+    clean_aliyun
     ssh_key
     language_cn
-    etc_profile
     person_bin
     rc_local
     set_bash
