@@ -69,6 +69,7 @@ clean_iptables(){
     echo -e "[Unit]\nDescription=clean_iptables Service\nAfter=network.target\n\n[Service]\nType=forking\nExecStart=/bin/clean_iptables\n\n[Install]\nWantedBy=multi-user.target" > /etc/systemd/system/clean_iptables.service
     systemctl daemon-reload
     systemctl enable clean_iptables.service
+    clean_iptables
 } >/dev/null 2>&1
 
 install_software(){
