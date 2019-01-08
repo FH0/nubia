@@ -23,7 +23,9 @@ person_bin() {
     echo -e '#!/bin/bash\niptables -t mangle -F' > /bin/imf
     echo -e '#!/bin/bash\niptables -t raw -F' > /bin/irf
     echo -e '#!/bin/bash\niptables -F' > /bin/iff
-    chmod +x /bin/i*
+    echo -e '#!/bin/bash' > /bin/dk
+    echo -e "input=\"\$1\"\nRED=\"\\\033[31m\"\nGREEN=\"\\\033[32m\"\nYELLOW=\"\\\033[33m\"\nBLUE=\"\\\033[36m\"\n\ncolorEcho(){\n    COLOR=\$1\n    echo -e \"\${COLOR}\${@:2}\\\033[0m\"\n}\n\nif echo \"\$input\" | grep -q \"^[0-9][0-9]*\\\\$\";then\n    info=\$(netstat -anp | grep -E \"^tcp|^udp\" | grep \"LISTEN\" | grep \":\$input\" | awk '{print \$4\"   \"\$7}')\nelse\n    info=\$(netstat -anp | grep -E \"^tcp|^udp\" | grep \"LISTEN\" | grep \"\$input\" | awk '{print \$4\"   \"\$7}')\nfi\n\nfor loop in \$(seq 1 \$(echo -e \"\$info\" | wc -l));do\n    PID=\$(echo -e \"\$info\" | sed -n \"\${loop}p\" | sed \"s|.* \\\([0-9]*\\\)/.*|\\\1|\")\n    process=\$(echo -e \"\$info\" | sed -n \"\${loop}p\" | awk -F \"/\" '{print \$NF}')\n    listen_info=\$(echo -e \"\$info\" | sed -n \"\${loop}p\" | awk '{print \$1}')\n    connection=\$(ss -o state established sport = :\$(echo \"\$listen_info\" | grep -Eo \"[0-9]*\") | awk '{print \$5}' | grep -Eo '([0-9]{1,3}\\\.){3}[0-9]{1,3}' | sort -u | wc -l)\n    [ -z \"\$info\" ] || colorEcho \${YELLOW} \"\$process  \$PID  \$listen_info  \$connection\"\ndone" >> /bin/dk
+    chmod +x /bin/i* /bin/dk
 }
 
 rc_local() {
