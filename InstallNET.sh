@@ -638,7 +638,7 @@ if [[ "$linuxdists" == 'debian' ]] || [[ "$linuxdists" == 'ubuntu' ]]; then
     d-i netcfg/get_ipaddress string $IPv4
     d-i netcfg/get_netmask string $MASK
     d-i netcfg/get_gateway string $GATE
-    d-i netcfg/get_nameservers string 8.8.8.8
+    d-i netcfg/get_nameservers string 1.1.1.1
     d-i netcfg/no_default_route boolean true
     d-i netcfg/confirm_static boolean true
 
@@ -792,7 +792,7 @@ elif [[ "$linuxdists" == 'centos' ]]; then
     skipx
     timezone --isUtc Asia/Hong_Kong
     #ONDHCP network --bootproto=dhcp --onboot=on
-    #NODHCP network --bootproto=static --ip=$IPv4 --netmask=$MASK --gateway=$GATE --nameserver=8.8.8.8 --onboot=on
+    #NODHCP network --bootproto=static --ip=$IPv4 --netmask=$MASK --gateway=$GATE --nameserver=1.1.1.1 --onboot=on
     bootloader --location=mbr --append="rhgb quiet crashkernel=auto"
     zerombr
     clearpart --all --initlabel 
