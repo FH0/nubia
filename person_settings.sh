@@ -54,11 +54,16 @@ set_bash() {
 }
 
 language_cn() {
-    sed -i 's|#||g' /etc/locale.gen
-    sed -i 's|^|#|g' /etc/locale.gen
-    sed -i 's|.*en_US.UTF|en_US.UTF|' /etc/locale.gen
-    sed -i 's|.*zh_CN.UTF|zh_CN.UTF|' /etc/locale.gen
-    locale-gen
+    if [ -f "/etc/locale.gen" ];then
+        sed -i 's|#||g' /etc/locale.gen
+        sed -i 's|^|#|g' /etc/locale.gen
+        sed -i 's|.*en_US.UTF|en_US.UTF|' /etc/locale.gen
+        sed -i 's|.*zh_CN.UTF|zh_CN.UTF|' /etc/locale.gen
+        locale-gen
+    elif command -v locale-gen && command -v update-locale;then
+        locale-gen zh_CN.UTF-8
+        update-locale
+    fi
 }
 
 clean_iptables(){
@@ -78,9 +83,9 @@ clean_iptables(){
 install_software(){
     if command -v apt-get;then
         apt-get update
-        apt-get install curl wget jq file locales git iproute net-tools make unzip tar zip vim dnsutils -y
+        apt-get install curl wget sudo jq file locales git iproute net-tools make unzip tar zip vim dnsutils -y
     elif command -v yum;then
-        yum install epel-release curl file wget git iproute net-tools jq locales make unzip tar zip vim bind-utils -y
+        yum install epel-release sudo curl file wget git iproute net-tools jq locales make unzip tar zip vim bind-utils -y
     fi
 } >/dev/null 2>&1
 
