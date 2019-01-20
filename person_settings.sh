@@ -57,7 +57,7 @@ language_cn() {
     if [ -f "/etc/locale.gen" ];then
         sed -i 's|#||g' /etc/locale.gen
         sed -i 's|^|#|g' /etc/locale.gen
-        sed -i 's|.*en_US.UTF|en_US.UTF|' /etc/locale.gen
+#        sed -i 's|.*en_US.UTF|en_US.UTF|' /etc/locale.gen
         sed -i 's|.*zh_CN.UTF|zh_CN.UTF|' /etc/locale.gen
         locale-gen
     elif command -v locale-gen && command -v update-locale;then
