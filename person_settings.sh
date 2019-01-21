@@ -100,7 +100,7 @@ main() {
     clean_iptables
     clean_aliyun
     ssh_key
-    language_cn
+#    language_cn
     person_bin
     rc_local
     set_bash
