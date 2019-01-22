@@ -48,7 +48,7 @@ set_bash() {
     echo 'alias vi="vim" #JZDH' >> .bashrc
     echo 'alias grep="grep --color=auto" #JZDH' >> .bashrc
     echo "clear #JZDH" >> .bashrc
-    echo 'LANG=zh_CN.UTF-8 #JZDH' >> /root/.bashrc
+#    echo 'LANG=zh_CN.UTF-8 #JZDH' >> /root/.bashrc
     chmod 644 .bashrc
     . .bashrc
 }
