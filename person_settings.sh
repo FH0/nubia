@@ -48,22 +48,7 @@ set_bash() {
     echo 'alias vi="vim" #JZDH' >> .bashrc
     echo 'alias grep="grep --color=auto" #JZDH' >> .bashrc
     echo "clear #JZDH" >> .bashrc
-#    echo 'LANG=zh_CN.UTF-8 #JZDH' >> /root/.bashrc
     chmod 644 .bashrc
-    . .bashrc
-}
-
-language_cn() {
-    if [ -f "/etc/locale.gen" ];then
-        sed -i 's|#||g' /etc/locale.gen
-        sed -i 's|^|#|g' /etc/locale.gen
-#        sed -i 's|.*en_US.UTF|en_US.UTF|' /etc/locale.gen
-        sed -i 's|.*zh_CN.UTF|zh_CN.UTF|' /etc/locale.gen
-        locale-gen
-    elif command -v locale-gen && command -v update-locale;then
-        locale-gen zh_CN.UTF-8
-        update-locale
-    fi
 }
 
 clean_iptables(){
@@ -100,7 +85,6 @@ main() {
     clean_iptables
     clean_aliyun
     ssh_key
-#    language_cn
     person_bin
     rc_local
     set_bash
