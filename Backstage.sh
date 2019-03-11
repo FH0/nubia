@@ -118,7 +118,7 @@ panel() {
     ((var++)) ; echo -e "  $var. 安装${AriaNG_status}AriaNG\033[0m"
     ((var++)) ; echo -e "  $var. 安装${koolproxy_status}koolproxy\033[0m"
     ((var++)) ; echo -e "  $var. 安装${frp_status}frp\033[0m"
-    ((var++)) ; echo -e "  $var. 安装${dnsmasq_status}dnsmasq去广告\033[0m"
+    ((var++)) ; echo -e "  $var. 安装${dnsmasq_status}dnsmasq缓存DNS\033[0m"
     ((var++)) ; echo -e "  $var. 安装${swapfile_status}swap分区\033[0m"
     echo && read -p $'\033[33m请选择: \033[0m' panel_choice && echo
     
