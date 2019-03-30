@@ -14,12 +14,15 @@ colorEcho(){
 
 cmd_need(){
     colorEcho $BLUE "正在安装 $1 ..."
-    if [ -z "$(command -v yum)" ];then
-        apt-get update
-        apt-get install $1 -y
-    else
-        yum install $1 -y
-    fi >/dev/null 2>&1
+    [ -z "$(command -v yum)" ] && CHECK=$(dpkg -l) || CHECK=$(rpm -qa)
+    [ -z "$(command -v yum)" ] && Installer="apt-get" || Installer="yum"
+    var="0"
+    for command in $1;do
+        if ! echo "$CHECK" | grep -q "$command";then
+            [ "$var" = "0" ] && apt-get update && var="1"
+            $Installer install $command -y
+        fi > /dev/null 2>&1
+    done
 }
 
 systemd_init() {
