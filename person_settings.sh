@@ -1,6 +1,6 @@
 #!/bin/bash
 export PATH="/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin"
- 
+
 ssh_key() {
     mkdir -p /root/.ssh
     echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDuwLr5N5CxF51tEOXtJJ3Qr2+uY7lVtZfWNwN59yewWUhc6p77CiWj917TrOgrgGMIIgb7AXU0vrdNr2IFJ0fNdyF9S9dfEU8+KAqr+FUH7ywQ8b2sktbqTyVLEZ/lVcd7/+KPxFIP7L7UILqEIIx0rGPVAax8UEwLtMlJ1fakPL98UMTx94hQ2ZW8LW6MJsKd2RWoMkbsn0Joif3SiUGCeGcY8IDzQC8xUZQPFJxVkHqj5Z4iDqms8TNNaKYp7nirTTGHiFW0x7uSAoBxXqKur+c0JLc3ABi5FIlC3+yVtwVr7l4/eHK7bRb/iERoMNEyVF22U5Sha41NQZquDitF root@localhost' > /root/.ssh/authorized_keys
@@ -68,9 +68,9 @@ clean_iptables(){
 install_software(){
     if command -v apt-get;then
         apt-get update
-        apt-get install curl wget sudo jq file tree locales git iproute net-tools make unzip tar zip vim dnsutils -y
+        apt-get install curl wget sudo jq qrencode file tree locales git iproute net-tools make unzip tar zip vim dnsutils -y
     elif command -v yum;then
-        yum install epel-release sudo curl file tree wget git iproute net-tools jq locales make unzip tar zip vim bind-utils -y
+        yum install epel-release sudo qrencode curl file tree wget git iproute net-tools jq locales make unzip tar zip vim bind-utils -y
     fi
 } >/dev/null 2>&1
 
