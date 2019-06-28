@@ -68,9 +68,9 @@ clean_iptables(){
 install_software(){
     if command -v apt-get;then
         apt-get update
-        apt-get install curl wget sudo jq qrencode file tree locales git iproute net-tools make unzip tar zip vim dnsutils -y
+        apt-get install curl wget iperf iperf3 sudo jq qrencode file tree locales git iproute net-tools make unzip tar zip vim dnsutils -y
     elif command -v yum;then
-        yum install epel-release sudo qrencode curl file tree wget git iproute net-tools jq locales make unzip tar zip vim bind-utils -y
+        yum install epel-release iperf iperf3 sudo qrencode curl file tree wget git iproute net-tools jq locales make unzip tar zip vim bind-utils -y
     fi
 } >/dev/null 2>&1
 
