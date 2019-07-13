@@ -111,6 +111,7 @@ panel() {
     [ -d "/usr/local/frps" ] && frp_status="$GREEN"
     [ -d "/usr/local/dnsmasq" ] && dnsmasq_status="$GREEN"
     [ -d "/usr/local/swapfile" ] && swapfile_status="$GREEN"
+    [ -d "/usr/local/oneindex" ] && oneindex_status="$GREEN"
 
     var=0
     clear && colorEcho $BLUE "欢迎使用JZDH集合脚本"
@@ -123,6 +124,7 @@ panel() {
     ((var++)) ; echo -e "  $var. 安装${frp_status}frp\033[0m"
     ((var++)) ; echo -e "  $var. 安装${dnsmasq_status}dnsmasq缓存DNS\033[0m"
     ((var++)) ; echo -e "  $var. 安装${swapfile_status}swap分区\033[0m"
+    ((var++)) ; echo -e "  $var. 安装${oneindex_status}oneindex\033[0m"
     echo && read -p $'\033[33m请选择: \033[0m' panel_choice && echo
 
     if echo "$panel_choice" | grep -q " ";then
@@ -137,6 +139,7 @@ panel() {
             ((var++)) ; [ "$M" = "$var" ] && install_zip frps
             ((var++)) ; [ "$M" = "$var" ] && install_zip dnsmasq
             ((var++)) ; [ "$M" = "$var" ] && install_zip swapfile
+            ((var++)) ; [ "$M" = "$var" ] && install_zip oneindex
         done >/dev/null 2>&1
         echo -e "${YELLOW}批量安装已完成\033[0m\n"
     else
@@ -150,6 +153,7 @@ panel() {
         ((var++)) ; [ "$panel_choice" = "$var" ] && install_zip frps
         ((var++)) ; [ "$panel_choice" = "$var" ] && install_zip dnsmasq
         ((var++)) ; [ "$panel_choice" = "$var" ] && install_zip swapfile
+        ((var++)) ; [ "$panel_choice" = "$var" ] && install_zip oneindex
     fi
     exit 0
 }
