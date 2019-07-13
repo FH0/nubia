@@ -1,5 +1,5 @@
 #!/bin/bash
-export PATH="/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin"
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 RED="\033[31m"
 GREEN="\033[32m"
@@ -26,7 +26,7 @@ cmd_need(){
 }
 
 systemd_init() {
-    echo -e '#!/bin/bash\nexport PATH="/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin"' > /bin/systemd_init
+    echo -e '#!/bin/bash\nexport PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"' > /bin/systemd_init
     echo -e "$1" >> /bin/systemd_init
     echo -e "systemctl disable systemd_init.service\nrm -f /etc/systemd/system/systemd_init.service /bin/systemd_init" >> /bin/systemd_init
     chmod +x /bin/systemd_init

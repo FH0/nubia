@@ -1,5 +1,5 @@
 #!/bin/bash
-export PATH="/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin"
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 ssh_key() {
     mkdir -p /root/.ssh
@@ -53,7 +53,7 @@ set_bash() {
 
 clean_iptables(){
     [ -f "/etc/systemd/system/clean_iptables.service" ] && return 0
-    echo -e '#!/bin/bash\nexport PATH="/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin"' > /bin/clean_iptables
+    echo -e '#!/bin/bash\nexport PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"' > /bin/clean_iptables
     chmod 755 /bin/clean_iptables
     for chain in filter nat mangle raw;do
         iptables -t $chain -S | grep "\-[AI] " | sed "s|-[AI] |-D |g;s|^|iptables -t $chain |g" >> /bin/clean_iptables
