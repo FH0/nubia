@@ -19,6 +19,7 @@ person_bin() {
     mkdir -p /usr/xbin
     unzip -q -o person_bin.zip -d /usr/xbin
     rm -f person_bin.zip
+    chmod +x -R /usr/xbin
  }
 
 rc_local() {
