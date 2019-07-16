@@ -39,7 +39,7 @@ install_zip(){
     key="$1"
     wp="/usr/local/$key"
     zip="$key.zip"
-    wget -q -N --no-check-certificate https://raw.githubusercontent.com/FH0/nubia/master/$zip
+    curl -sOL https://raw.githubusercontent.com/FH0/nubia/master/$zip
     [ -d "$wp" ] && bash $wp/uninstall.sh >/dev/null 2>&1
     rm -rf $wp ; mkdir -p $wp
     unzip -q -o $zip -d $wp ; rm -f $zip
@@ -56,7 +56,7 @@ install_bbr() {
         exit 0
     elif [ -z "$(command -v yum)" ];then
         colorEcho $BLUE "正在下载4.16内核..."
-        wget -N -q --no-check-certificate -O 4.16.deb http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.16/linux-image-4.16.0-041600-generic_4.16.0-041600.201804012230_amd64.deb
+        curl -sL -o 4.16.deb http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.16/linux-image-4.16.0-041600-generic_4.16.0-041600.201804012230_amd64.deb
         colorEcho $BLUE "正在安装4.16内核..."
         dpkg -i 4.16.deb >/dev/null 2>&1
         rm -f 4.16.deb
@@ -76,7 +76,7 @@ install_bbr() {
 
 install_ssr() {
     [ ! -z "$ssr_status" ] && bash /usr/local/SSR-Bash-Python/uninstall.sh >/dev/null 2>&1
-    wget -N --no-check-certificate https://raw.githubusercontent.com/FH0/nubia/master/ssr.zip
+    curl -sOL https://raw.githubusercontent.com/FH0/nubia/master/ssr.zip
     unzip -o ssr.zip
     bash SSR-Bash-Python/install.sh
     rm -rf SSR-Bash-Python ssr.zip
@@ -100,7 +100,7 @@ check_system() {
 
 panel() {
     check_system
-    cmd_need 'unzip wget net-tools curl'
+    cmd_need 'unzip net-tools curl'
 
     [ -d "/usr/local/SSR-Bash-Python" ] && ssr_status="$GREEN"
     [ -d "/usr/local/v2ray" ] && v2ray_status="$GREEN"
