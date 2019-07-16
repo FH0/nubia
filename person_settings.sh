@@ -16,10 +16,10 @@ ssh_key() {
 
 person_bin() {
     curl -sOL https://raw.githubusercontent.com/FH0/nubia/master/person_bin.zip
-	mkdir -p /usr/xbin
-	unzip -q -o person_bin.zip -d /usr/xbin
-	rm -f person_bin.zip
-}
+    mkdir -p /usr/xbin
+    unzip -q -o person_bin.zip -d /usr/xbin
+    rm -f person_bin.zip
+ }
 
 rc_local() {
     echo -e '[Unit]\nDescription=/etc/rc.local\nConditionPathExists=/etc/rc.local\n\n[Service]\nType=forking\nExecStart=/etc/rc.local start\nTimeoutSec=0\nStandardOutput=tty\nRemainAfterExit=yes\nSysVStartPriority=99\n\n[Install]\nWantedBy=multi-user.target' > /etc/systemd/system/rc-local.service
@@ -41,6 +41,7 @@ set_bash() {
     echo 'alias vi="vim" #JZDH' >> .bashrc
     echo 'alias grep="grep --color=auto" #JZDH' >> .bashrc
     echo "clear #JZDH" >> .bashrc
+    echo "export PATH=\"$PATH:/usr/xbin\" #JZDH" >> /root/.bashrc
     chmod 644 .bashrc
 }
 
