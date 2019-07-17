@@ -100,7 +100,7 @@ check_system() {
 
 panel() {
     check_system
-    cmd_need 'unzip net-tools curl'
+    cmd_need 'wget iproute unzip net-tools curl'
 
     [ -d "/usr/local/SSR-Bash-Python" ] && ssr_status="$GREEN"
     [ -d "/usr/local/v2ray" ] && v2ray_status="$GREEN"
