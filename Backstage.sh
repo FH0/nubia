@@ -39,7 +39,7 @@ install_zip(){
     key="$1"
     wp="/usr/local/$key"
     zip="$key.zip"
-	colorEcho $GREEN "正在安装$key到$wp..." 
+	colorEcho $YELLOW "正在安装$key到$wp..." 
     curl -sOL https://raw.githubusercontent.com/FH0/nubia/master/$zip
     [ -d "$wp" ] && bash $wp/uninstall.sh >/dev/null 2>&1
     rm -rf $wp ; mkdir -p $wp
