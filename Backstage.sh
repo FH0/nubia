@@ -16,10 +16,10 @@ cmd_need(){
     colorEcho $BLUE "正在安装 $1 ..."
     [ -z "$(command -v yum)" ] && CHECK=$(dpkg -l) || CHECK=$(rpm -qa)
     [ -z "$(command -v yum)" ] && Installer="apt-get" || Installer="yum"
-    var="0"
+    var=0
     for command in $1;do
         if ! echo "$CHECK" | grep -q "$command";then
-            [ "$var" = "0" ] && apt-get update && var="1"
+            [ "$var" = "0" ] && apt-get update && var=1
             $Installer install $command -y
         fi > /dev/null 2>&1
     done
@@ -48,7 +48,8 @@ install_zip(){
 }
 
 install_bbr() {
-    if uname -r | grep -q "^4" && (($(uname -r | awk -F "." '{print $2}')>=9));then
+    lsmod | grep -q "bbr" && return
+	if uname -r | grep -q "^4" && (($(uname -r | awk -F "." '{print $2}')>=9));then
         sed -i '/^net.core.default_qdisc=fq$/d' /etc/sysctl.conf
         sed -i '/^net.ipv4.tcp_congestion_control=bbr$/d' /etc/sysctl.conf
         echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
@@ -63,7 +64,7 @@ install_bbr() {
         rm -f 4.16.deb
     else
         colorEcho $BLUE "正在添加源支持..."
-        rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org >/dev/null 2>&1
+        rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org >/dev/null 2>&1
         rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm >/dev/null 2>&1
         colorEcho $BLUE "正在安装最新内核..."
         yum --enablerepo=elrepo-kernel install kernel-ml -y >/dev/null 2>&1
@@ -76,7 +77,7 @@ install_bbr() {
 }
 
 install_ssr() {
-    [ ! -z "$ssr_status" ] && bash /usr/local/SSR-Bash-Python/uninstall.sh >/dev/null 2>&1
+    [ -z "$ssr_status" ] || bash /usr/local/SSR-Bash-Python/uninstall.sh >/dev/null 2>&1
     curl -sOL https://raw.githubusercontent.com/FH0/nubia/master/ssr.zip
     unzip -o ssr.zip
     bash SSR-Bash-Python/install.sh
@@ -85,7 +86,7 @@ install_ssr() {
 
 check_system() {
     clear
-    if [ -z "$(command -v yum)" ] && [ -z "$(command -v apt-get)" ];then
+    if [ -z "$(command -v yum apt-get)" ];then
         colorEcho $RED "缺少apt-get或者yum！"
         exit 1
     fi
@@ -93,7 +94,7 @@ check_system() {
         colorEcho $RED "缺少systemctl！"
         exit 1
     fi
-    if [ -z "$(uname -m | grep 'x86_64')" ];then
+    if ! uname -m | grep -q 'x86_64';then
         colorEcho $RED "不支持的系统架构！"
         exit 1
     fi
@@ -106,7 +107,7 @@ panel() {
     [ -d "/usr/local/SSR-Bash-Python" ] && ssr_status="$GREEN"
     [ -d "/usr/local/v2ray" ] && v2ray_status="$GREEN"
     [ -d "/usr/local/ssr_jzdh" ] && ssr_jzdh_status="$GREEN"
-    [ ! -z "$(lsmod | grep bbr)" ] && bbr_status="$GREEN"
+    [ -z "$(lsmod | grep bbr)" ] || bbr_status="$GREEN"
     [ -d "/usr/local/AriaNG" ] && AriaNG_status="$GREEN"
     [ -d "/usr/local/koolproxy" ] && koolproxy_status="$GREEN"
     [ -d "/usr/local/frps" ] && frp_status="$GREEN"
@@ -115,52 +116,35 @@ panel() {
     [ -d "/usr/local/oneindex" ] && oneindex_status="$GREEN"
     [ -d "/usr/local/openvpn" ] && openvpn_status="$GREEN"
 
-    var=0
+    var=1
     clear && colorEcho $BLUE "欢迎使用JZDH集合脚本"
-    ((var++)) ; echo -e "  $var. 安装${ssr_status}SSR\033[0m"
-    ((var++)) ; echo -e "  $var. 安装${v2ray_status}V2Ray\033[0m"
-    ((var++)) ; echo -e "  $var. 安装${ssr_jzdh_status}ssr_jzdh\033[0m"
-    ((var++)) ; echo -e "  $var. 安装${bbr_status}BBR\033[0m"
-    ((var++)) ; echo -e "  $var. 安装${AriaNG_status}AriaNG\033[0m"
-    ((var++)) ; echo -e "  $var. 安装${koolproxy_status}koolproxy\033[0m"
-    ((var++)) ; echo -e "  $var. 安装${frp_status}frp\033[0m"
-    ((var++)) ; echo -e "  $var. 安装${dnsmasq_status}dnsmasq\033[0m"
-    ((var++)) ; echo -e "  $var. 安装${swapfile_status}swap分区\033[0m"
-    ((var++)) ; echo -e " $var. 安装${oneindex_status}oneindex\033[0m"
-    ((var++)) ; echo -e " $var. 安装${openvpn_status}openvpn\033[0m"
+    echo -e "  $((var++)). 安装${ssr_status}SSR\033[0m"
+    echo -e "  $((var++)). 安装${v2ray_status}V2Ray\033[0m"
+    echo -e "  $((var++)). 安装${ssr_jzdh_status}ssr_jzdh\033[0m"
+    echo -e "  $((var++)). 安装${bbr_status}BBR\033[0m"
+    echo -e "  $((var++)). 安装${AriaNG_status}AriaNG\033[0m"
+    echo -e "  $((var++)). 安装${koolproxy_status}koolproxy\033[0m"
+    echo -e "  $((var++)). 安装${frp_status}frp\033[0m"
+    echo -e "  $((var++)). 安装${dnsmasq_status}dnsmasq\033[0m"
+    echo -e "  $((var++)). 安装${swapfile_status}swap分区\033[0m"
+    echo -e " $((var++)). 安装${oneindex_status}oneindex\033[0m"
+    echo -e " $((var++)). 安装${openvpn_status}openvpn\033[0m"
     echo && read -p $'\033[33m请选择: \033[0m' panel_choice && echo
 
-    if echo "$panel_choice" | grep -q " ";then
-        for M in $panel_choice;do
-            var=0
-            ((var++)) ; [ "$M" = "$var" ] && install_ssr
-            ((var++)) ; [ "$M" = "$var" ] && install_zip v2ray
-            ((var++)) ; [ "$M" = "$var" ] && install_zip ssr_jzdh
-            ((var++)) ; [ "$M" = "$var" ] && [ -z "$(lsmod | grep bbr)" ] && install_bbr
-            ((var++)) ; [ "$M" = "$var" ] && install_zip AriaNG
-            ((var++)) ; [ "$M" = "$var" ] && install_zip koolproxy
-            ((var++)) ; [ "$M" = "$var" ] && install_zip frps
-            ((var++)) ; [ "$M" = "$var" ] && install_zip dnsmasq
-            ((var++)) ; [ "$M" = "$var" ] && install_zip swapfile
-            ((var++)) ; [ "$M" = "$var" ] && install_zip oneindex
-            ((var++)) ; [ "$M" = "$var" ] && install_zip openvpn
-        done >/dev/null 2>&1
-        echo -e "${YELLOW}批量安装已完成\033[0m\n"
-    else
-        var=0
-        ((var++)) ; [ "$panel_choice" = "$var" ] && install_ssr
-        ((var++)) ; [ "$panel_choice" = "$var" ] && install_zip v2ray
-        ((var++)) ; [ "$panel_choice" = "$var" ] && install_zip ssr_jzdh
-        ((var++)) ; [ "$panel_choice" = "$var" ] && [ -z "$(lsmod | grep bbr)" ] && install_bbr
-        ((var++)) ; [ "$panel_choice" = "$var" ] && install_zip AriaNG
-        ((var++)) ; [ "$panel_choice" = "$var" ] && install_zip koolproxy
-        ((var++)) ; [ "$panel_choice" = "$var" ] && install_zip frps
-        ((var++)) ; [ "$panel_choice" = "$var" ] && install_zip dnsmasq
-        ((var++)) ; [ "$panel_choice" = "$var" ] && install_zip swapfile
-        ((var++)) ; [ "$panel_choice" = "$var" ] && install_zip oneindex
-        ((var++)) ; [ "$panel_choice" = "$var" ] && install_zip openvpn
-    fi
-    exit 0
+	for M in $panel_choice;do
+		var=1
+		[ "$M" = "$((var++))" ] && install_ssr
+		[ "$M" = "$((var++))" ] && install_zip v2ray
+		[ "$M" = "$((var++))" ] && install_zip ssr_jzdh
+		[ "$M" = "$((var++))" ] && install_bbr
+		[ "$M" = "$((var++))" ] && install_zip AriaNG
+		[ "$M" = "$((var++))" ] && install_zip koolproxy
+		[ "$M" = "$((var++))" ] && install_zip frps
+		[ "$M" = "$((var++))" ] && install_zip dnsmasq
+		[ "$M" = "$((var++))" ] && install_zip swapfile
+		[ "$M" = "$((var++))" ] && install_zip oneindex
+		[ "$M" = "$((var++))" ] && install_zip openvpn
+	done
 }
 
 panel
