@@ -104,7 +104,6 @@ panel() {
     [ -d "/usr/local/ssr_jzdh" ] && ssr_jzdh_status="$GREEN"
     [ -z "$(lsmod | grep bbr)" ] || bbr_status="$GREEN"
     [ -d "/usr/local/AriaNG" ] && AriaNG_status="$GREEN"
-    [ -d "/usr/local/koolproxy" ] && koolproxy_status="$GREEN"
     [ -d "/usr/local/frps" ] && frp_status="$GREEN"
     [ -d "/usr/local/dnsmasq" ] && dnsmasq_status="$GREEN"
     [ -d "/usr/local/swapfile" ] && swapfile_status="$GREEN"
@@ -118,7 +117,6 @@ panel() {
     echo -e "  $((var++)). 安装${ssr_jzdh_status}ssr_jzdh\033[0m"
     echo -e "  $((var++)). 安装${bbr_status}BBR\033[0m"
     echo -e "  $((var++)). 安装${AriaNG_status}AriaNG\033[0m"
-    echo -e "  $((var++)). 安装${koolproxy_status}koolproxy\033[0m"
     echo -e "  $((var++)). 安装${frp_status}frp\033[0m"
     echo -e "  $((var++)). 安装${dnsmasq_status}dnsmasq\033[0m"
     echo -e "  $((var++)). 安装${swapfile_status}swap分区\033[0m"
@@ -133,7 +131,6 @@ panel() {
 		[ "$M" = "$((var++))" ] && install_zip ssr_jzdh
 		[ "$M" = "$((var++))" ] && install_bbr
 		[ "$M" = "$((var++))" ] && install_zip AriaNG
-		[ "$M" = "$((var++))" ] && install_zip koolproxy
 		[ "$M" = "$((var++))" ] && install_zip frps
 		[ "$M" = "$((var++))" ] && install_zip dnsmasq
 		[ "$M" = "$((var++))" ] && install_zip swapfile
