@@ -87,14 +87,9 @@ install_ssr() {
 check_system() {
     clear
     if [ -z "$(command -v yum apt-get)" ];then
-        colorEcho $RED "缺少apt-get或者yum！"
+        colorEcho $RED "不支持的操作系统！"
         exit 1
-    fi
-    if [ -z "$(command -v systemctl)" ];then
-        colorEcho $RED "缺少systemctl！"
-        exit 1
-    fi
-    if ! uname -m | grep -q 'x86_64';then
+    elif ! uname -m | grep -q 'x86_64';then
         colorEcho $RED "不支持的系统架构！"
         exit 1
     fi
@@ -117,7 +112,7 @@ panel() {
     [ -d "/usr/local/openvpn" ] && openvpn_status="$GREEN"
 
     var=1
-    clear && colorEcho $BLUE "欢迎使用JZDH集合脚本"
+    colorEcho $BLUE "欢迎使用JZDH集合脚本"
     echo -e "  $((var++)). 安装${ssr_status}SSR\033[0m"
     echo -e "  $((var++)). 安装${v2ray_status}V2Ray\033[0m"
     echo -e "  $((var++)). 安装${ssr_jzdh_status}ssr_jzdh\033[0m"
