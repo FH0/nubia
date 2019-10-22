@@ -111,7 +111,7 @@ panel() {
     [ -d "/usr/local/openvpn" ] && openvpn_status="$GREEN"
 
     var=1
-    colorEcho $BLUE "欢迎使用JZDH集合脚本"
+    clear && colorEcho $BLUE "欢迎使用JZDH集合脚本"
     echo -e "  $((var++)). 安装${ssr_status}SSR\033[0m"
     echo -e "  $((var++)). 安装${v2ray_status}V2Ray\033[0m"
     echo -e "  $((var++)). 安装${ssr_jzdh_status}ssr_jzdh\033[0m"
