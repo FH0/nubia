@@ -13,16 +13,20 @@ colorEcho(){
 }
 
 cmd_need(){
-    colorEcho $BLUE "正在安装 $1 ..."
     [ -z "$(command -v yum)" ] && CHECK=$(dpkg -l) || CHECK=$(rpm -qa)
-    [ -z "$(command -v yum)" ] && Installer="apt-get" || Installer="yum"
-    var=0
     for command in $1;do
-        if ! echo "$CHECK" | grep -q "$command";then
-            [ "$var" = "0" ] && apt-get update && var=1
-            $Installer install $command -y
-        fi > /dev/null 2>&1
+        echo "$CHECK" | grep -q "$command" || CMD="$command $CMD"
     done
+    if [ ! -z "$CMD" ];then
+		colorEcho $BLUE "正在安装 $CMD ..."
+		if [ -z "$(command -v yum)" ];then
+			apt-get update
+			apt-get install $CMD -y
+		else
+			yum install $CMD -y
+		fi > /dev/null 2>&1
+		clear
+	fi
 }
 
 systemd_init() {
@@ -39,7 +43,7 @@ install_zip(){
     key="$1"
     wp="/usr/local/$key"
     zip="$key.zip"
-	colorEcho $YELLOW "正在安装$key到$wp..." 
+    colorEcho $YELLOW "正在安装$key到$wp..." 
     curl -sOL https://raw.githubusercontent.com/FH0/nubia/master/$zip
     [ -d "$wp" ] && bash $wp/uninstall.sh >/dev/null 2>&1
     rm -rf $wp ; mkdir -p $wp
@@ -49,7 +53,7 @@ install_zip(){
 
 install_bbr() {
     lsmod | grep -q "bbr" && return
-	if uname -r | grep -q "^4" && (($(uname -r | awk -F "." '{print $2}')>=9));then
+    if uname -r | grep -q "^4" && (($(uname -r | awk -F "." '{print $2}')>=9));then
         sed -i '/^net.core.default_qdisc=fq$/d' /etc/sysctl.conf
         sed -i '/^net.ipv4.tcp_congestion_control=bbr$/d' /etc/sysctl.conf
         echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
@@ -111,7 +115,7 @@ panel() {
     [ -d "/usr/local/openvpn" ] && openvpn_status="$GREEN"
 
     var=1
-    clear && colorEcho $BLUE "欢迎使用JZDH集合脚本"
+    colorEcho $BLUE "欢迎使用JZDH集合脚本"
     echo -e "  $((var++)). 安装${ssr_status}SSR\033[0m"
     echo -e "  $((var++)). 安装${v2ray_status}V2Ray\033[0m"
     echo -e "  $((var++)). 安装${ssr_jzdh_status}ssr_jzdh\033[0m"
@@ -124,19 +128,19 @@ panel() {
     echo -e " $((var++)). 安装${openvpn_status}openvpn\033[0m"
     echo && read -p $'\033[33m请选择: \033[0m' panel_choice && echo
 
-	for M in $panel_choice;do
-		var=1
-		[ "$M" = "$((var++))" ] && install_ssr
-		[ "$M" = "$((var++))" ] && install_zip v2ray
-		[ "$M" = "$((var++))" ] && install_zip ssr_jzdh
-		[ "$M" = "$((var++))" ] && install_bbr
-		[ "$M" = "$((var++))" ] && install_zip AriaNG
-		[ "$M" = "$((var++))" ] && install_zip frps
-		[ "$M" = "$((var++))" ] && install_zip dnsmasq
-		[ "$M" = "$((var++))" ] && install_zip swapfile
-		[ "$M" = "$((var++))" ] && install_zip oneindex
-		[ "$M" = "$((var++))" ] && install_zip openvpn
-	done
+    for M in $panel_choice;do
+        var=1
+        [ "$M" = "$((var++))" ] && install_ssr
+        [ "$M" = "$((var++))" ] && install_zip v2ray
+        [ "$M" = "$((var++))" ] && install_zip ssr_jzdh
+        [ "$M" = "$((var++))" ] && install_bbr
+        [ "$M" = "$((var++))" ] && install_zip AriaNG
+        [ "$M" = "$((var++))" ] && install_zip frps
+        [ "$M" = "$((var++))" ] && install_zip dnsmasq
+        [ "$M" = "$((var++))" ] && install_zip swapfile
+        [ "$M" = "$((var++))" ] && install_zip oneindex
+        [ "$M" = "$((var++))" ] && install_zip openvpn
+    done
 }
 
 panel
