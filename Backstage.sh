@@ -5,10 +5,20 @@ RED="\033[31m"
 GREEN="\033[32m"
 YELLOW="\033[33m"
 BLUE="\033[36m"
+BLANK="\033[0m"
 
 colorEcho(){
     COLOR=$1
-    echo -e "${COLOR}${@:2}\033[0m"
+    echo -e "${COLOR}${@:2}${BLANK}"
+    echo
+}
+
+colorRead(){
+    COLOR=$1
+    OUTPUT=$2
+    VARIABLE=$3
+    echo -e -n "$COLOR$OUTPUT${BLANK}: "
+    read $VARIABLE
     echo
 }
 
@@ -116,17 +126,17 @@ panel() {
 
     var=1
     colorEcho $BLUE "欢迎使用JZDH集合脚本"
-    echo -e "  $((var++)). 安装${ssr_status}SSR\033[0m"
-    echo -e "  $((var++)). 安装${v2ray_status}V2Ray\033[0m"
-    echo -e "  $((var++)). 安装${ssr_jzdh_status}ssr_jzdh\033[0m"
-    echo -e "  $((var++)). 安装${bbr_status}BBR\033[0m"
-    echo -e "  $((var++)). 安装${AriaNG_status}AriaNG\033[0m"
-    echo -e "  $((var++)). 安装${frp_status}frp\033[0m"
-    echo -e "  $((var++)). 安装${dnsmasq_status}dnsmasq\033[0m"
-    echo -e "  $((var++)). 安装${swapfile_status}swap分区\033[0m"
-    echo -e "  $((var++)). 安装${oneindex_status}oneindex\033[0m"
-    echo -e " $((var++)). 安装${openvpn_status}openvpn\033[0m"
-    echo && read -p $'\033[33m请选择: \033[0m' panel_choice && echo
+    printf "%3s. 安装${ssr_status}SSR${BLANK}\n" "$((var++))"
+    printf "%3s. 安装${v2ray_status}V2Ray${BLANK}\n" "$((var++))"
+    printf "%3s. 安装${ssr_jzdh_status}ssr_jzdh${BLANK}\n" "$((var++))"
+    printf "%3s. 安装${bbr_status}BBR${BLANK}\n" "$((var++))"
+    printf "%3s. 安装${AriaNG_status}AriaNG${BLANK}\n" "$((var++))"
+    printf "%3s. 安装${frp_status}frp${BLANK}\n" "$((var++))"
+    printf "%3s. 安装${dnsmasq_status}dnsmasq${BLANK}\n" "$((var++))"
+    printf "%3s. 安装${swapfile_status}swap分区${BLANK}\n" "$((var++))"
+    printf "%3s. 安装${oneindex_status}oneindex${BLANK}\n" "$((var++))"
+    printf "%3s. 安装${openvpn_status}openvpn${BLANK}\n" "$((var++))"
+    echo && colorRead ${YELLOW} '请选择: ' panel_choice && echo
 
     for M in $panel_choice;do
         var=1
