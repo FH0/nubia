@@ -136,7 +136,7 @@ panel() {
     printf "%3s. 安装${swapfile_status}swap分区${BLANK}\n" "$((var++))"
     printf "%3s. 安装${oneindex_status}oneindex${BLANK}\n" "$((var++))"
     printf "%3s. 安装${openvpn_status}openvpn${BLANK}\n" "$((var++))"
-    echo && colorRead ${YELLOW} '请选择: ' panel_choice && echo
+    echo && colorRead ${YELLOW} '请选择' panel_choice
 
     for M in $panel_choice;do
         var=1
