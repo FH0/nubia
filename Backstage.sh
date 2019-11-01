@@ -123,6 +123,7 @@ panel() {
     [ -d "/usr/local/swapfile" ] && swapfile_status="$GREEN"
     [ -d "/usr/local/oneindex" ] && oneindex_status="$GREEN"
     [ -d "/usr/local/openvpn" ] && openvpn_status="$GREEN"
+    [ -d "/usr/local/wireguard" ] && wireguard_status="$GREEN"
 
     var=1
     colorEcho $BLUE "欢迎使用JZDH集合脚本"
@@ -136,6 +137,7 @@ panel() {
     printf "%3s. 安装${swapfile_status}swap分区${BLANK}\n" "$((var++))"
     printf "%3s. 安装${oneindex_status}oneindex${BLANK}\n" "$((var++))"
     printf "%3s. 安装${openvpn_status}openvpn${BLANK}\n" "$((var++))"
+    printf "%3s. 安装${wireguard_status}wireguard${BLANK}\n" "$((var++))"
     echo && colorRead ${YELLOW} '请选择' panel_choice
 
     for M in $panel_choice;do
@@ -150,6 +152,7 @@ panel() {
         [ "$M" = "$((var++))" ] && install_zip swapfile
         [ "$M" = "$((var++))" ] && install_zip oneindex
         [ "$M" = "$((var++))" ] && install_zip openvpn
+        [ "$M" = "$((var++))" ] && install_zip wireguard
     done
 }
 
