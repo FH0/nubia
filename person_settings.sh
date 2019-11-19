@@ -15,12 +15,24 @@ ssh_key() {
 }
 
 person_bin() {
-    curl -sOL https://raw.githubusercontent.com/FH0/nubia/master/person_bin.zip
     mkdir -p /usr/xbin
-    unzip -q -o person_bin.zip -d /usr/xbin
-    rm -f person_bin.zip
+	echo -e "export PATH=\"/usr/xbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\nfor file in \$(ls /usr/xbin);do\n	cp /usr/xbin/\$file /usr/xbin/a; \n	ee /usr/xbin/a /usr/xbin/\$file;\n	cat /usr/xbin/a;\ndone\n\nrm -f /usr/xbin/a" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/bak_xbin
+	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\n\ncd /root/FH0.github.io\ngit add --all\ngit commit -m \"update\"\ngit push origin master" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/bksc
+	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\ninput=\"\${@:-(}\"\nYELLOW=\"\\\033[33m\"\nBLANK=\"\\\033[0m\"\n\nfor var in \$input;do\n    info=\$(ss -tunpl | grep \"\$var\")\n\n    for loop in \$(seq 1 \$(echo \"\$info\" | wc -l));do\n        PID=\$(echo \"\$info\" | sed -n \"\${loop}p\" | awk -F \"=\" '{print \$2}' | awk -F \",\" '{print \$1}')\n        process=\$(echo \"\$info\" | sed -n \"\${loop}p\" | awk -F \"\\\\"\" '{print \$2}')\n        listen_info=\$(echo \"\$info\" | sed -n \"\${loop}p\" | awk '{print \$5}')\n        connection=\$(ss -o state established sport = :\${listen_info##*:} | awk '{print \$5}' | grep -Eo '([0-9]{1,3}\\\.){3}[0-9]{1,3}' | sort -u | wc -l)\n        out=\"\$(printf \"  \$YELLOW%-12s %-8s %-15s %-3s\$BLANK\\\n\" \$process  \$PID  \$listen_info  \$connection)\"\n        outs=\"\$out\\\n\$outs\"\n    done\ndone\n\necho -e \"\$outs\" | sed \"/^\$/d\" | sort -u\n" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/dk
+	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\n\nif [ ! -z \"\$1\" ];then\n    sed -i 's|\\\\\\|\\\\\\\\\\\\\\\\\\|g' \$1\n    sed -i 's|\\\\$|\\\\\\\\\\$|g' \$1\n    sed -i 's|\"|\\\\\\\"|g' \$1\n    sed -i ':a;N;\$!ba;s|\\\n|\\\\\\n|g' \$1\n    var=\$(awk -F '\\\\\\\\\\\\n' '{print \$1}' \$1)\n    if echo \$var | grep -q \"^#!\";then\n        sed -i \"s|\$var\\\\\\\\\n||g\" \$1\n    fi\n    sed -i 's|^|echo -e \"|' \$1\n    if echo \$var | grep -q \"^#!\";then\n        sed -i \"s~\$~\\\\" | sed '1s|^|\$var\\\\\\\\\n|' > \${2}~\" \$1\n    else\n        sed -i 's|\$|\" > '\${2}'|' \$1\n    fi\n    rm -f \${1}.bak\nfi" | sed '1s|^|#!/bin/sh\n|' > /usr/xbin/ee
+	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\n\ncd /root/github\ngit add *\ngit commit -m \"update\"\ngit push origin FH0:master" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/gitsc
+	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\niptables -F\niptables -X\niptables -Z\n" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/iff
+	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\niptables -S" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/ifs
+	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\niptables -t mangle -F\niptables -t mangle -X\niptables -t mangle -Z\n" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/imf
+	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\niptables -t mangle -S" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/ims
+	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\niptables -t nat -F\niptables -t nat -X\niptables -t nat -Z\n" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/inf
+	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\niptables -t nat -S" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/ins
+	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\niptables -t raw -F\niptables -t raw -X\niptables -t raw -Z\n" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/irf
+	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\niptables -t raw -S" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/irs
+	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\n\nexpect <(echo -e \"spawn -noecho vim \$1\\\nafter 200\\\nsend \\\\"gg=G\\\\\\\\\r\\\\"\\\nafter 500\\\nsend \\\\":wq\\\\\\\\\r\\\\"\\\ninteract\")\nsed -i \"s|\\\t|    |g;s|[ \\\t]*\$||g\" \$1\n" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/j
+	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\n\nOLD=\$1\nREPLACE=\$2\nzip_file=\$(ls *.zip 2>/dev/null)\n\nfor unzip_file in \$zip_file;do\n    rm -rf \${unzip_file%.zip}\n    unzip -q -o \$unzip_file -d \${unzip_file%.zip}\ndone\n\nsed -i \"s|\$OLD|\$REPLACE|g\" \$(grep -rl \"\$OLD\" .)\n\nfor rezip_file in \$zip_file;do\n    cd \${rezip_file%.zip}\n    rm -f ../\$rezip_file\n    zip -q -r ../\$rezip_file *\n    cd ..\ndone\n\nfor rm_file in \$zip_file;do\n    rm -rf \${rm_file%.zip}\ndone\n" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/spsed
     chmod +x -R /usr/xbin
- }
+}
 
 rc_local() {
     echo -e '[Unit]\nDescription=/etc/rc.local\nConditionPathExists=/etc/rc.local\n\n[Service]\nType=forking\nExecStart=/etc/rc.local start\nTimeoutSec=0\nStandardOutput=tty\nRemainAfterExit=yes\nSysVStartPriority=99\n\n[Install]\nWantedBy=multi-user.target' > /etc/systemd/system/rc-local.service
@@ -60,15 +72,6 @@ clean_iptables(){
     clean_iptables
 } >/dev/null 2>&1
 
-install_software(){
-    if command -v apt-get;then
-        apt-get update
-        apt-get install curl wget iperf iperf3 sudo jq qrencode file tree locales git iproute net-tools make unzip tar zip vim dnsutils -y
-    elif command -v yum;then
-        yum install epel-release iperf iperf3 sudo qrencode curl file tree wget git iproute net-tools jq locales make unzip tar zip vim bind-utils -y
-    fi
-} >/dev/null 2>&1
-
 clean_aliyun(){
     for clean in $(find / -name *[Aa][Ll][Ii][Yy][Uu][Nn]* | grep -v "_bak");do
         mv $clean ${clean}_bak
@@ -76,7 +79,6 @@ clean_aliyun(){
 } >/dev/null 2>&1
 
 main() {
-    install_software
     clean_iptables
     clean_aliyun
     ssh_key

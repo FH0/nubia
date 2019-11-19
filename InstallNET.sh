@@ -713,7 +713,9 @@ d-i debian-installer/exit/reboot boolean true
 d-i preseed/late_command string	\
 sed -ri 's/^#?PermitRootLogin.*/PermitRootLogin yes/g' /target/etc/ssh/sshd_config; \
 sed -ri 's/^#?PasswordAuthentication.*/PasswordAuthentication yes/g' /target/etc/ssh/sshd_config; \
-/bin/bash <(curl -sL https://raw.githubusercontent.com/FH0/nubia/master/person_settings.sh)
+in-target wget -O /root/person_settings.sh --no-check-certificate https://raw.githubusercontent.com/FH0/nubia/master/person_settings.sh; \
+in-target /bin/bash /root/person_settings.sh; \
+in-target rm /root/person_settings.sh
 EOF
 
 [[ "$loaderMode" != "0" ]] && AutoNet='1'
