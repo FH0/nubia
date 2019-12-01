@@ -55,6 +55,15 @@ set_bash() {
     echo 'alias grep="grep --color=auto" #JZDH' >> .bashrc
     echo "clear #JZDH" >> .bashrc
     echo "export PATH=\"$PATH:/usr/xbin\" #JZDH" >> /root/.bashrc
+
+    #默认记录 500 条，调整成 100,000 条
+    sed -i '/HISTSIZE/d' /root/.bashrc
+    echo 'HISTSIZE=100000' >> /root/.bashrc
+
+    #记录命令的执行时间
+    sed -i '/HISTTIMEFORMAT/d' /root/.bashrc
+    echo "HISTTIMEFORMAT='%F %T  '" >> /root/.bashrc
+
     chmod 644 .bashrc
 }
 
