@@ -63,7 +63,7 @@ install_zip(){
 
 install_bbr() {
     lsmod | grep -q "bbr" && return
-    if uname -r | grep -q "^4" && (($(uname -r | awk -F "." '{print $2}')>=9));then
+    if (($(uname -r | grep -Eo '^.')>4)) || (uname -r | grep -q "^4" && (($(uname -r | awk -F "." '{print $2}')>=9)));then
         sed -i '/^net.core.default_qdisc=fq$/d' /etc/sysctl.conf
         sed -i '/^net.ipv4.tcp_congestion_control=bbr$/d' /etc/sysctl.conf
         echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf

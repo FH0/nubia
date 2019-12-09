@@ -82,18 +82,37 @@ clean_iptables(){
 } >/dev/null 2>&1
 
 clean_aliyun(){
-    for clean in $(find / -name *[Aa][Ll][Ii][Yy][Uu][Nn]* | grep -v "_bak");do
+    for clean in $(find /usr -name *[Aa][Ll][Ii][Yy][Uu][Nn]* | grep -v "_bak");do
+        mv $clean ${clean}_bak
+    done
+    for clean in $(find /etc -name *[Aa][Ll][Ii][Yy][Uu][Nn]* | grep -v "_bak");do
         mv $clean ${clean}_bak
     done
 } >/dev/null 2>&1
 
+adjust_dns(){
+	grep -q 'systemd-resolved' /etc/resolv.conf || return
+	systemctl stop systemd-resolved.service
+	systemctl disable systemd-resolved.service
+	rm -f /etc/resolv.conf
+	echo 'nameserver 8.8.8.8' >/etc/resolv.conf
+} >/dev/null 2>&1
+
+remove_snapd(){
+	command -v snap || return
+	apt autoremove --purge snapd -y
+	rm -rf /root/snap
+} >/dev/null 2>&1
+
 main() {
     clean_iptables
-    clean_aliyun
+#    clean_aliyun
     ssh_key
     person_bin
     rc_local
     set_bash
+	adjust_dns
+	remove_snapd
 }
 
 main
