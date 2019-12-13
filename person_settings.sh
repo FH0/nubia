@@ -1,36 +1,40 @@
 #!/bin/bash
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
-ssh_key() {
+handle_sshd_config() {
     mkdir -p /root/.ssh
     echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDuwLr5N5CxF51tEOXtJJ3Qr2+uY7lVtZfWNwN59yewWUhc6p77CiWj917TrOgrgGMIIgb7AXU0vrdNr2IFJ0fNdyF9S9dfEU8+KAqr+FUH7ywQ8b2sktbqTyVLEZ/lVcd7/+KPxFIP7L7UILqEIIx0rGPVAax8UEwLtMlJ1fakPL98UMTx94hQ2ZW8LW6MJsKd2RWoMkbsn0Joif3SiUGCeGcY8IDzQC8xUZQPFJxVkHqj5Z4iDqms8TNNaKYp7nirTTGHiFW0x7uSAoBxXqKur+c0JLc3ABi5FIlC3+yVtwVr7l4/eHK7bRb/iERoMNEyVF22U5Sha41NQZquDitF root@localhost' > /root/.ssh/authorized_keys
     chmod 600 /root/.ssh/authorized_keys
     sed -i '/ChallengeResponseAuthentication/d' /etc/ssh/sshd_config
     sed -i '/PasswordAuthentication/d' /etc/ssh/sshd_config
     sed -i '/Port /d' /etc/ssh/sshd_config
+#    sed -i '/ClientAliveInterval /d' /etc/ssh/sshd_config
+#    sed -i '/ClientAliveCountMax /d' /etc/ssh/sshd_config
     echo 'ChallengeResponseAuthentication no' >> /etc/ssh/sshd_config
     echo 'PasswordAuthentication no' >> /etc/ssh/sshd_config
     echo 'Port 22' >> /etc/ssh/sshd_config
+#    echo 'ClientAliveInterval 120' >> /etc/ssh/sshd_config
+#    echo 'ClientAliveCountMax 72000' >> /etc/ssh/sshd_config
     systemctl restart sshd
 }
 
 person_bin() {
     mkdir -p /usr/xbin
-	echo -e "export PATH=\"/usr/xbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\nfor file in \$(ls /usr/xbin);do\n	cp /usr/xbin/\$file /usr/xbin/a; \n	ee /usr/xbin/a /usr/xbin/\$file;\n	cat /usr/xbin/a;\ndone\n\nrm -f /usr/xbin/a" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/bak_xbin
-	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\n\ncd /root/FH0.github.io\ngit add *\ngit commit -m \"update\"\ngit push -u origin master" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/bksc
-	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\ninput=\"\${@:-(}\"\nYELLOW=\"\\033[33m\"\nBLANK=\"\\033[0m\"\n\nfor var in \$input;do\n    info=\$(ss -tunpl | grep \"\$var\")\n\n    for loop in \$(seq 1 \$(echo \"\$info\" | wc -l));do\n        PID=\$(echo \"\$info\" | sed -n \"\${loop}p\" | awk -F \"=\" '{print \$2}' | awk -F \",\" '{print \$1}')\n        process=\$(echo \"\$info\" | sed -n \"\${loop}p\" | awk -F \"\\\"\" '{print \$2}')\n        listen_info=\$(echo \"\$info\" | sed -n \"\${loop}p\" | awk '{print \$5}')\n        connection=\$(ss -o state established sport = :\${listen_info##*:} | awk '{print \$5}' | grep -Eo '([0-9]{1,3}\\.){3}[0-9]{1,3}' | sort -u | wc -l)\n        out=\"\$(printf \"  \$YELLOW%-12s %-8s %-15s %-3s\$BLANK\\n\" \$process  \$PID  \$listen_info  \$connection)\"\n        outs=\"\$out\\n\$outs\"\n    done\ndone\n\necho -e \"\$outs\" | sed \"/^\$/d\" | sort -u\n" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/dk
-	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\n\nif [ ! -z \"\$1\" ];then\n    sed -i 's|\\\\|\\\\\\\\|g' \$1\n    sed -i 's|\\\$|\\\\\\\$|g' \$1\n    sed -i 's|\"|\\\\\"|g' \$1\n    sed -i ':a;N;\$!ba;s|\\n|\\\\n|g' \$1\n    var=\$(awk -F '\\\\\\\\n' '{print \$1}' \$1)\n    if echo \$var | grep -q \"^#\\!\";then\n        sed -i \"s|\$var\\\\\\n||g\" \$1\n    fi\n    sed -i 's|^|echo -e \"|' \$1\n    if echo \$var | grep -q \"^#\\!\";then\n        sed -i \"s~\$~\\\" | sed '1s|^|\$var\\\\\\n|' > \${2}~\" \$1\n    else\n        sed -i 's|\$|\" > '\${2}'|' \$1\n    fi\n    rm -f \${1}.bak\nfi" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/ee
-	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\n\ncd /root/github\ngit add *\ngit commit -m \"update\"\ngit push origin FH0:master" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/gitsc
-	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\niptables -F\niptables -X\niptables -Z\n" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/iff
-	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\niptables -S" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/ifs
-	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\niptables -t mangle -F\niptables -t mangle -X\niptables -t mangle -Z\n" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/imf
-	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\niptables -t mangle -S" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/ims
-	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\niptables -t nat -F\niptables -t nat -X\niptables -t nat -Z\n" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/inf
-	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\niptables -t nat -S" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/ins
-	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\niptables -t raw -F\niptables -t raw -X\niptables -t raw -Z\n" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/irf
-	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\niptables -t raw -S" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/irs
-	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\n\nexpect <(echo -e \"spawn -noecho vim \$1\\nafter 200\\nsend \\\"gg=G\\\\\\r\\\"\\nafter 500\\nsend \\\":wq\\\\\\r\\\"\\ninteract\")\nsed -i \"s|\\t|    |g;s|[ \\t]*\$||g\" \$1\n" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/j
-	echo -e "export PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"\n\n\nOLD=\$1\nREPLACE=\$2\nzip_file=\$(ls *.zip 2>/dev/null)\n\nfor unzip_file in \$zip_file;do\n    rm -rf \${unzip_file%.zip}\n    unzip -q -o \$unzip_file -d \${unzip_file%.zip}\ndone\n\nsed -i \"s|\$OLD|\$REPLACE|g\" \$(grep -rl \"\$OLD\" .)\n\nfor rezip_file in \$zip_file;do\n    cd \${rezip_file%.zip}\n    rm -f ../\$rezip_file\n    zip -q -r ../\$rezip_file *\n    cd ..\ndone\n\nfor rm_file in \$zip_file;do\n    rm -rf \${rm_file%.zip}\ndone\n" | sed '1s|^|#!/bin/bash\n|' > /usr/xbin/spsed
+	echo 'IyEvYmluL2Jhc2gKZXhwb3J0IFBBVEg9Ii91c3IveGJpbjovdXNyL2xvY2FsL3NiaW46L3Vzci9sb2NhbC9iaW46L3Vzci9zYmluOi91c3IvYmluOi9zYmluOi9iaW4iCgpmb3IgZmlsZSBpbiAkKGxzIC91c3IveGJpbik7ZG8KCWVjaG8gImVjaG8gJyQoY2F0IC91c3IveGJpbi8kZmlsZSB8IGJhc2U2NCB8IHRyIC1kICdcbicpJyB8IGJhc2U2NCAtZCA+L3Vzci94YmluLyRmaWxlIgpkb25lCg==' | base64 -d >/usr/xbin/bak_xbin
+	echo 'IyEvYmluL2Jhc2gKZXhwb3J0IFBBVEg9Ii91c3IvbG9jYWwvc2JpbjovdXNyL2xvY2FsL2JpbjovdXNyL3NiaW46L3Vzci9iaW46L3NiaW46L2JpbiIKCgpjZCAvcm9vdC9GSDAuZ2l0aHViLmlvCmdpdCBhZGQgKgpnaXQgY29tbWl0IC1tICJ1cGRhdGUiCmdpdCBwdXNoIC11IG9yaWdpbiBtYXN0ZXIK' | base64 -d >/usr/xbin/bksc
+	echo 'IyEvYmluL2Jhc2gKZXhwb3J0IFBBVEg9Ii91c3IvbG9jYWwvc2JpbjovdXNyL2xvY2FsL2JpbjovdXNyL3NiaW46L3Vzci9iaW46L3NiaW46L2JpbiIKCmlucHV0PSIke0A6LSh9IgpZRUxMT1c9IhtbMzNtIgpCTEFOSz0iG1swbSIKCmZvciB2YXIgaW4gJGlucHV0O2RvCiAgICBpbmZvPSQoc3MgLXR1bnBsIHwgZ3JlcCAiJHZhciIpCgogICAgZm9yIGxvb3AgaW4gJChzZXEgMSAkKGVjaG8gIiRpbmZvIiB8IHdjIC1sKSk7ZG8KICAgICAgICBQSUQ9JChlY2hvICIkaW5mbyIgfCBzZWQgLW4gIiR7bG9vcH1wIiB8IGF3ayAtRiAiPSIgJ3twcmludCAkMn0nIHwgYXdrIC1GICIsIiAne3ByaW50ICQxfScpCiAgICAgICAgcHJvY2Vzcz0kKGVjaG8gIiRpbmZvIiB8IHNlZCAtbiAiJHtsb29wfXAiIHwgYXdrIC1GICJcIiIgJ3twcmludCAkMn0nKQogICAgICAgIGxpc3Rlbl9pbmZvPSQoZWNobyAiJGluZm8iIHwgc2VkIC1uICIke2xvb3B9cCIgfCBhd2sgJ3twcmludCAkNX0nKQogICAgICAgIGNvbm5lY3Rpb249JChzcyAtbyBzdGF0ZSBlc3RhYmxpc2hlZCBzcG9ydCA9IDoke2xpc3Rlbl9pbmZvIyMqOn0gfCBhd2sgJ3twcmludCAkNX0nIHwgZ3JlcCAtRW8gJyhbMC05XXsxLDN9XC4pezN9WzAtOV17MSwzfScgfCBzb3J0IC11IHwgd2MgLWwpCiAgICAgICAgb3V0PSIkKHByaW50ZiAiICAkWUVMTE9XJS0xMnMgJS04cyAlLTE1cyAlLTNzJEJMQU5LCiIgJHByb2Nlc3MgICRQSUQgICRsaXN0ZW5faW5mbyAgJGNvbm5lY3Rpb24pIgogICAgICAgIG91dHM9IiRvdXQKJG91dHMiCiAgICBkb25lCmRvbmUKCmVjaG8gLWUgIiRvdXRzIiB8IHNlZCAiL14kL2QiIHwgc29ydCAtdQoK' | base64 -d >/usr/xbin/dk
+	echo 'IyEvYmluL2Jhc2gKZXhwb3J0IFBBVEg9Ii91c3IvbG9jYWwvc2JpbjovdXNyL2xvY2FsL2JpbjovdXNyL3NiaW46L3Vzci9iaW46L3NiaW46L2JpbiIKCgppZiBbICEgLXogIiQxIiBdO3RoZW4KICAgIHNlZCAtaSAnc3xcfFxcfGcnICQxCiAgICBzZWQgLWkgJ3N8XCR8XFwkfGcnICQxCiAgICBzZWQgLWkgJ3N8InxcInxnJyAkMQogICAgc2VkIC1pICc6YTtOOyQhYmE7c3wKfFxufGcnICQxCiAgICB2YXI9JChhd2sgLUYgJ1xcbicgJ3twcmludCAkMX0nICQxKQogICAgaWYgZWNobyAkdmFyIHwgZ3JlcCAtcSAiXiNcISI7dGhlbgogICAgICAgIHNlZCAtaSAic3wkdmFyXAp8fGciICQxCiAgICBmaQogICAgc2VkIC1pICdzfF58ZWNobyAtZSAifCcgJDEKICAgIGlmIGVjaG8gJHZhciB8IGdyZXAgLXEgIl4jXCEiO3RoZW4KICAgICAgICBzZWQgLWkgInN+JH5cIiB8IHNlZCAnMXN8XnwkdmFyXAp8JyA+ICR7Mn1+IiAkMQogICAgZWxzZQogICAgICAgIHNlZCAtaSAnc3wkfCIgPiAnJHsyfSd8JyAkMQogICAgZmkKICAgIHJtIC1mICR7MX0uYmFrCmZpCg==' | base64 -d >/usr/xbin/ee
+	echo 'IyEvYmluL2Jhc2gKZXhwb3J0IFBBVEg9Ii91c3IvbG9jYWwvc2JpbjovdXNyL2xvY2FsL2JpbjovdXNyL3NiaW46L3Vzci9iaW46L3NiaW46L2JpbiIKCgpjZCAvcm9vdC9naXRodWIKZ2l0IGFkZCAqCmdpdCBjb21taXQgLW0gInVwZGF0ZSIKZ2l0IHB1c2ggb3JpZ2luIEZIMDptYXN0ZXIK' | base64 -d >/usr/xbin/gitsc
+	echo 'IyEvYmluL2Jhc2gKZXhwb3J0IFBBVEg9Ii91c3IvbG9jYWwvc2JpbjovdXNyL2xvY2FsL2JpbjovdXNyL3NiaW46L3Vzci9iaW46L3NiaW46L2JpbiIKCmlwdGFibGVzIC1GCmlwdGFibGVzIC1YCmlwdGFibGVzIC1aCgo=' | base64 -d >/usr/xbin/iff
+	echo 'IyEvYmluL2Jhc2gKZXhwb3J0IFBBVEg9Ii91c3IvbG9jYWwvc2JpbjovdXNyL2xvY2FsL2JpbjovdXNyL3NiaW46L3Vzci9iaW46L3NiaW46L2JpbiIKCmlwdGFibGVzIC1TCg==' | base64 -d >/usr/xbin/ifs
+	echo 'IyEvYmluL2Jhc2gKZXhwb3J0IFBBVEg9Ii91c3IvbG9jYWwvc2JpbjovdXNyL2xvY2FsL2JpbjovdXNyL3NiaW46L3Vzci9iaW46L3NiaW46L2JpbiIKCmlwdGFibGVzIC10IG1hbmdsZSAtRgppcHRhYmxlcyAtdCBtYW5nbGUgLVgKaXB0YWJsZXMgLXQgbWFuZ2xlIC1aCgo=' | base64 -d >/usr/xbin/imf
+	echo 'IyEvYmluL2Jhc2gKZXhwb3J0IFBBVEg9Ii91c3IvbG9jYWwvc2JpbjovdXNyL2xvY2FsL2JpbjovdXNyL3NiaW46L3Vzci9iaW46L3NiaW46L2JpbiIKCmlwdGFibGVzIC10IG1hbmdsZSAtUwo=' | base64 -d >/usr/xbin/ims
+	echo 'IyEvYmluL2Jhc2gKZXhwb3J0IFBBVEg9Ii91c3IvbG9jYWwvc2JpbjovdXNyL2xvY2FsL2JpbjovdXNyL3NiaW46L3Vzci9iaW46L3NiaW46L2JpbiIKCmlwdGFibGVzIC10IG5hdCAtRgppcHRhYmxlcyAtdCBuYXQgLVgKaXB0YWJsZXMgLXQgbmF0IC1aCgo=' | base64 -d >/usr/xbin/inf
+	echo 'IyEvYmluL2Jhc2gKZXhwb3J0IFBBVEg9Ii91c3IvbG9jYWwvc2JpbjovdXNyL2xvY2FsL2JpbjovdXNyL3NiaW46L3Vzci9iaW46L3NiaW46L2JpbiIKCmlwdGFibGVzIC10IG5hdCAtUwo=' | base64 -d >/usr/xbin/ins
+	echo 'IyEvYmluL2Jhc2gKZXhwb3J0IFBBVEg9Ii91c3IvbG9jYWwvc2JpbjovdXNyL2xvY2FsL2JpbjovdXNyL3NiaW46L3Vzci9iaW46L3NiaW46L2JpbiIKCmlwdGFibGVzIC10IHJhdyAtRgppcHRhYmxlcyAtdCByYXcgLVgKaXB0YWJsZXMgLXQgcmF3IC1aCgo=' | base64 -d >/usr/xbin/irf
+	echo 'IyEvYmluL2Jhc2gKZXhwb3J0IFBBVEg9Ii91c3IvbG9jYWwvc2JpbjovdXNyL2xvY2FsL2JpbjovdXNyL3NiaW46L3Vzci9iaW46L3NiaW46L2JpbiIKCmlwdGFibGVzIC10IHJhdyAtUwo=' | base64 -d >/usr/xbin/irs
+	echo 'IyEvYmluL2Jhc2gKZXhwb3J0IFBBVEg9Ii91c3IvbG9jYWwvc2JpbjovdXNyL2xvY2FsL2JpbjovdXNyL3NiaW46L3Vzci9iaW46L3NiaW46L2JpbiIKCgpleHBlY3QgPChlY2hvIC1lICJzcGF3biAtbm9lY2hvIHZpbSAkMQphZnRlciAyMDAKc2VuZCBcImdnPUdcDVwiCmFmdGVyIDUwMApzZW5kIFwiOndxXA1cIgppbnRlcmFjdCIpCnNlZCAtaSAic3wJfCAgICB8ZztzfFsgCV0qJHx8ZyIgJDEKCg==' | base64 -d >/usr/xbin/j
+	echo 'IyEvYmluL2Jhc2gKZXhwb3J0IFBBVEg9Ii91c3IvbG9jYWwvc2JpbjovdXNyL2xvY2FsL2JpbjovdXNyL3NiaW46L3Vzci9iaW46L3NiaW46L2JpbiIKCgpPTEQ9JDEKUkVQTEFDRT0kMgp6aXBfZmlsZT0kKGxzICouemlwIDI+L2Rldi9udWxsKQoKZm9yIHVuemlwX2ZpbGUgaW4gJHppcF9maWxlO2RvCiAgICBybSAtcmYgJHt1bnppcF9maWxlJS56aXB9CiAgICB1bnppcCAtcSAtbyAkdW56aXBfZmlsZSAtZCAke3VuemlwX2ZpbGUlLnppcH0KZG9uZQoKc2VkIC1pICJzfCRPTER8JFJFUExBQ0V8ZyIgJChncmVwIC1ybCAiJE9MRCIgLikKCmZvciByZXppcF9maWxlIGluICR6aXBfZmlsZTtkbwogICAgY2QgJHtyZXppcF9maWxlJS56aXB9CiAgICBybSAtZiAuLi8kcmV6aXBfZmlsZQogICAgemlwIC1xIC1yIC4uLyRyZXppcF9maWxlICoKICAgIGNkIC4uCmRvbmUKCmZvciBybV9maWxlIGluICR6aXBfZmlsZTtkbwogICAgcm0gLXJmICR7cm1fZmlsZSUuemlwfQpkb25lCgo=' | base64 -d >/usr/xbin/spsed
     chmod +x -R /usr/xbin
 }
 
@@ -107,7 +111,7 @@ remove_snapd(){
 main() {
     clean_iptables
 #    clean_aliyun
-    ssh_key
+    handle_sshd_config
     person_bin
     rc_local
     set_bash
