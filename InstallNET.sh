@@ -183,7 +183,7 @@ function SelectMirror(){
   [ -n "$VER" ] || exit 1
   relese=$(echo $Relese |sed -r 's/(.*)/\L\1/')
   if [ "$Relese" == "Debian" ] || [ "$Relese" == "Ubuntu" ]; then
-    inUpdate=''; [ "$Relese" == "Ubuntu" ] && inUpdate='-updates'
+    inUpdate=''; [ "$Relese" == "Ubuntu" ] && inUpdate=''
     MirrorTEMP="SUB_MIRROR/dists/${DIST}${inUpdate}/main/installer-${VER}/current/images/netboot/${relese}-installer/${VER}/initrd.gz"
   elif [ "$Relese" == "CentOS" ]; then
     MirrorTEMP="SUB_MIRROR/${DIST}/os/${VER}/isolinux/initrd.img"
@@ -280,6 +280,7 @@ if [[ -z "$DIST" ]]; then
         [[ "$isDigital" == '14.04' ]] && DIST='trusty';
         [[ "$isDigital" == '16.04' ]] && DIST='xenial';
         [[ "$isDigital" == '18.04' ]] && DIST='bionic';
+        [[ "$isDigital" == '19.10' ]] && DIST='eoan';
       }
     }
     LinuxMirror=$(SelectMirror "$Relese" "$DIST" "$VER" "$tmpMirror")
@@ -402,7 +403,7 @@ fi
 echo -e "\n[\033[33m$Relese\033[0m] [\033[33m$DIST\033[0m] [\033[33m$VER\033[0m] Downloading..."
 
 if [[ "$linux_relese" == 'debian' ]] || [[ "$linux_relese" == 'ubuntu' ]]; then
-  inUpdate=''; [ "$linux_relese" == 'ubuntu' ] && inUpdate='-updates'
+  inUpdate=''; [ "$linux_relese" == 'ubuntu' ] && inUpdate=''
   wget --no-check-certificate -qO '/boot/initrd.img' "${LinuxMirror}/dists/${DIST}${inUpdate}/main/installer-${VER}/current/images/netboot/${linux_relese}-installer/${VER}/initrd.gz"
   [[ $? -ne '0' ]] && echo -ne "\033[31mError! \033[0mDownload 'initrd.img' for \033[33m$linux_relese\033[0m failed! \n" && exit 1
   wget --no-check-certificate -qO '/boot/vmlinuz' "${LinuxMirror}/dists/${DIST}${inUpdate}/main/installer-${VER}/current/images/netboot/${linux_relese}-installer/${VER}/linux"
