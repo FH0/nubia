@@ -68,6 +68,12 @@ set_bash() {
     sed -i '/HISTTIMEFORMAT/d' /root/.bashrc
     echo "HISTTIMEFORMAT='%F %T  '" >> /root/.bashrc
 
+    #实时记录
+    sed -i '/histappend/d' /root/.bashrc
+    sed -i '/PROMPT_COMMAND/d' /root/.bashrc
+    echo "shopt -s histappend" >> /root/.bashrc
+    echo "PROMPT_COMMAND='history -a'" >> /root/.bashrc
+
     chmod 644 .bashrc
 }
 
