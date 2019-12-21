@@ -123,19 +123,21 @@ panel() {
     [ -d "/usr/local/oneindex" ] && oneindex_status="$GREEN"
     [ -d "/usr/local/openvpn" ] && openvpn_status="$GREEN"
     [ -d "/usr/local/wireguard" ] && wireguard_status="$GREEN"
+    [ -d "/usr/local/tinyvpn" ] && tinyvpn_status="$GREEN"
 
     var=1
     colorEcho $BLUE "欢迎使用JZDH集合脚本"
-    printf "%3s. 安装${ssr_status}SSR${BLANK}\n" "$((var++))"
-    printf "%3s. 安装${v2ray_status}V2Ray${BLANK}\n" "$((var++))"
-    printf "%3s. 安装${ssr_jzdh_status}ssr_jzdh${BLANK}\n" "$((var++))"
-    printf "%3s. 安装${bbr_status}BBR${BLANK}\n" "$((var++))"
-    printf "%3s. 安装${AriaNG_status}AriaNG${BLANK}\n" "$((var++))"
-    printf "%3s. 安装${frp_status}frp${BLANK}\n" "$((var++))"
-    printf "%3s. 安装${swapfile_status}swap分区${BLANK}\n" "$((var++))"
-    printf "%3s. 安装${oneindex_status}oneindex${BLANK}\n" "$((var++))"
-    printf "%3s. 安装${openvpn_status}openvpn${BLANK}\n" "$((var++))"
-    printf "%3s. 安装${wireguard_status}wireguard${BLANK}\n" "$((var++))"
+    printf "%3s. 安装 ${ssr_status}SSR${BLANK}\n" "$((var++))"
+    printf "%3s. 安装 ${v2ray_status}V2Ray${BLANK}\n" "$((var++))"
+    printf "%3s. 安装 ${ssr_jzdh_status}ssr_jzdh${BLANK}\n" "$((var++))"
+    printf "%3s. 安装 ${bbr_status}BBR${BLANK}\n" "$((var++))"
+    printf "%3s. 安装 ${AriaNG_status}AriaNG${BLANK}\n" "$((var++))"
+    printf "%3s. 安装 ${frp_status}frp${BLANK}\n" "$((var++))"
+    printf "%3s. 安装 ${swapfile_status}swap 分区${BLANK}\n" "$((var++))"
+    printf "%3s. 安装 ${oneindex_status}oneindex${BLANK}\n" "$((var++))"
+    printf "%3s. 安装 ${openvpn_status}openvpn${BLANK}\n" "$((var++))"
+    printf "%3s. 安装 ${wireguard_status}wireguard${BLANK}\n" "$((var++))"
+    printf "%3s. 安装 ${tinyvpn_status}tinyvpn-udp2raw${BLANK}\n" "$((var++))"
     echo && colorRead ${YELLOW} '请选择' panel_choice
 
     for M in $panel_choice;do
@@ -150,6 +152,7 @@ panel() {
         [ "$M" = "$((var++))" ] && install_zip oneindex
         [ "$M" = "$((var++))" ] && install_zip openvpn
         [ "$M" = "$((var++))" ] && install_zip wireguard
+        [ "$M" = "$((var++))" ] && install_zip tinyvpn
     done
 }
 
