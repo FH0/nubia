@@ -120,7 +120,7 @@ panel() {
     [ -d "/usr/local/AriaNG" ] && AriaNG_status="$GREEN"
     [ -d "/usr/local/frps" ] && frp_status="$GREEN"
     [ -d "/usr/local/swapfile" ] && swapfile_status="$GREEN"
-    [ -d "/usr/local/oneindex" ] && oneindex_status="$GREEN"
+#    [ -d "/usr/local/oneindex" ] && oneindex_status="$GREEN"
     [ -d "/usr/local/openvpn" ] && openvpn_status="$GREEN"
     [ -d "/usr/local/wireguard" ] && wireguard_status="$GREEN"
     [ -d "/usr/local/tinyvpn" ] && tinyvpn_status="$GREEN"
@@ -134,7 +134,7 @@ panel() {
     printf "%3s. 安装 ${AriaNG_status}AriaNG${BLANK}\n" "$((var++))"
     printf "%3s. 安装 ${frp_status}frp${BLANK}\n" "$((var++))"
     printf "%3s. 安装 ${swapfile_status}swap 分区${BLANK}\n" "$((var++))"
-    printf "%3s. 安装 ${oneindex_status}oneindex${BLANK}\n" "$((var++))"
+#    printf "%3s. 安装 ${oneindex_status}oneindex${BLANK}\n" "$((var++))"
     printf "%3s. 安装 ${openvpn_status}openvpn${BLANK}\n" "$((var++))"
     printf "%3s. 安装 ${wireguard_status}wireguard${BLANK}\n" "$((var++))"
     printf "%3s. 安装 ${tinyvpn_status}tinyvpn-udp2raw${BLANK}\n" "$((var++))"
@@ -149,7 +149,7 @@ panel() {
         [ "$M" = "$((var++))" ] && install_zip AriaNG
         [ "$M" = "$((var++))" ] && install_zip frps
         [ "$M" = "$((var++))" ] && install_zip swapfile
-        [ "$M" = "$((var++))" ] && install_zip oneindex
+#        [ "$M" = "$((var++))" ] && install_zip oneindex
         [ "$M" = "$((var++))" ] && install_zip openvpn
         [ "$M" = "$((var++))" ] && install_zip wireguard
         [ "$M" = "$((var++))" ] && install_zip tinyvpn
