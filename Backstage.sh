@@ -124,6 +124,7 @@ panel() {
     [ -d "/usr/local/openvpn" ] && openvpn_status="$GREEN"
     [ -d "/usr/local/wireguard" ] && wireguard_status="$GREEN"
     [ -d "/usr/local/tinyvpn" ] && tinyvpn_status="$GREEN"
+    [ -d "/usr/local/smartdns" ] && smartdns_status="$GREEN"
 
     var=1
     colorEcho $BLUE "欢迎使用JZDH集合脚本"
@@ -138,6 +139,7 @@ panel() {
     printf "%3s. 安装 ${openvpn_status}openvpn${BLANK}\n" "$((var++))"
     printf "%3s. 安装 ${wireguard_status}wireguard${BLANK}\n" "$((var++))"
     printf "%3s. 安装 ${tinyvpn_status}tinyvpn-udp2raw${BLANK}\n" "$((var++))"
+    printf "%3s. 安装 ${smartdns_status}smartdns${BLANK}\n" "$((var++))"
     echo && colorRead ${YELLOW} '请选择' panel_choice
 
     for M in $panel_choice;do
@@ -153,6 +155,7 @@ panel() {
         [ "$M" = "$((var++))" ] && install_zip openvpn
         [ "$M" = "$((var++))" ] && install_zip wireguard
         [ "$M" = "$((var++))" ] && install_zip tinyvpn
+        [ "$M" = "$((var++))" ] && install_zip smartdns
     done
 }
 
