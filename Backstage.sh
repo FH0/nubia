@@ -125,9 +125,10 @@ panel() {
     [ -d "/usr/local/wireguard" ] && wireguard_status="$GREEN"
     [ -d "/usr/local/tinyvpn" ] && tinyvpn_status="$GREEN"
     [ -d "/usr/local/smartdns" ] && smartdns_status="$GREEN"
+    [ -d "/usr/local/tun2socks" ] && tun2socks_status="$GREEN"
 
     var=1
-    colorEcho $BLUE "欢迎使用JZDH集合脚本"
+    colorEcho $BLUE "欢迎使用 JZDH 集合脚本"
     printf "%3s. 安装 ${ssr_status}SSR${BLANK}\n" "$((var++))"
     printf "%3s. 安装 ${v2ray_status}V2Ray${BLANK}\n" "$((var++))"
     printf "%3s. 安装 ${ssr_jzdh_status}ssr_jzdh${BLANK}\n" "$((var++))"
@@ -140,6 +141,7 @@ panel() {
     printf "%3s. 安装 ${wireguard_status}wireguard${BLANK}\n" "$((var++))"
     printf "%3s. 安装 ${tinyvpn_status}tinyvpn-udp2raw${BLANK}\n" "$((var++))"
     printf "%3s. 安装 ${smartdns_status}smartdns${BLANK}\n" "$((var++))"
+    printf "%3s. 安装 ${tun2socks_status}tun2socks-v2ray 透明代理${BLANK}\n" "$((var++))"
     echo && colorRead ${YELLOW} '请选择' panel_choice
 
     for M in $panel_choice;do
@@ -156,6 +158,7 @@ panel() {
         [ "$M" = "$((var++))" ] && install_zip wireguard
         [ "$M" = "$((var++))" ] && install_zip tinyvpn
         [ "$M" = "$((var++))" ] && install_zip smartdns
+        [ "$M" = "$((var++))" ] && install_zip tun2socks
     done
 }
 
