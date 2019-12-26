@@ -39,63 +39,16 @@ cmd_need(){
 	fi
 }
 
-systemd_init() {
-    echo -e '#!/bin/bash\nexport PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"' > /bin/systemd_init
-    echo -e "$1" >> /bin/systemd_init
-    echo -e "systemctl disable systemd_init.service\nrm -f /etc/systemd/system/systemd_init.service /bin/systemd_init" >> /bin/systemd_init
-    chmod +x /bin/systemd_init
-    echo -e '[Unit]\nDescription=koolproxy Service\nAfter=network.target\n\n[Service]\nType=forking\nExecStart=/bin/systemd_init\n\n[Install]\nWantedBy=multi-user.target' > /etc/systemd/system/systemd_init.service
-    systemctl daemon-reload
-    systemctl enable systemd_init.service
-} > /dev/null 2>&1
-
 install_zip(){
     key="$1"
     wp="/usr/local/$key"
     zip="$key.zip"
-    colorEcho $YELLOW "正在安装$key到$wp..." 
+    colorEcho $YELLOW "正在安装 $key 到 $wp..." 
     curl -sOL https://raw.githubusercontent.com/FH0/nubia/master/server_script/$zip
     [ -d "$wp" ] && bash $wp/uninstall.sh >/dev/null 2>&1
     rm -rf $wp ; mkdir -p $wp
     unzip -q -o $zip -d $wp ; rm -f $zip
     bash $wp/install.sh
-}
-
-install_bbr() {
-    lsmod | grep -q "bbr" && return
-    if (($(uname -r | grep -Eo '^.')>4)) || (uname -r | grep -q "^4" && (($(uname -r | awk -F "." '{print $2}')>=9)));then
-        sed -i '/^net.core.default_qdisc=fq$/d' /etc/sysctl.conf
-        sed -i '/^net.ipv4.tcp_congestion_control=bbr$/d' /etc/sysctl.conf
-        echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
-        echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
-        sysctl -p >/dev/null 2>&1 && colorEcho $GREEN "BBR启动成功！"
-        exit 0
-    elif [ -z "$(command -v yum)" ];then
-        colorEcho $BLUE "正在下载4.16内核..."
-        curl -sL -o 4.16.deb http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.16/linux-image-4.16.0-041600-generic_4.16.0-041600.201804012230_amd64.deb
-        colorEcho $BLUE "正在安装4.16内核..."
-        dpkg -i 4.16.deb >/dev/null 2>&1
-        rm -f 4.16.deb
-    else
-        colorEcho $BLUE "正在添加源支持..."
-        rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org >/dev/null 2>&1
-        rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm >/dev/null 2>&1
-        colorEcho $BLUE "正在安装最新内核..."
-        yum --enablerepo=elrepo-kernel install kernel-ml -y >/dev/null 2>&1
-        grub2-set-default 0
-        grub2-mkconfig -o /boot/grub2/grub.cfg >/dev/null 2>&1
-    fi
-    colorEcho $GREEN "新内核安装完成！"
-    colorEcho ${YELLOW} "重启系统后即可安装BBR！"
-    systemd_init "sed -i '/^net.core.default_qdisc=fq\$/d' /etc/sysctl.conf\nsed -i '/^net.ipv4.tcp_congestion_control=bbr\$/d' /etc/sysctl.conf\necho \"net.core.default_qdisc=fq\" >> /etc/sysctl.conf\necho \"net.ipv4.tcp_congestion_control=bbr\" >> /etc/sysctl.conf\nsysctl -p"
-}
-
-install_ssr() {
-    [ -z "$ssr_status" ] || bash /usr/local/SSR-Bash-Python/uninstall.sh >/dev/null 2>&1
-    curl -sOL https://raw.githubusercontent.com/FH0/nubia/master/ssr.zip
-    unzip -o ssr.zip
-    bash SSR-Bash-Python/install.sh
-    rm -rf SSR-Bash-Python ssr.zip
 }
 
 check_system() {
@@ -109,56 +62,42 @@ check_system() {
     fi
 }
 
+jzdh_add(){
+	JZDH_ZIP+="$1 $2\n"
+}
+
 panel() {
     check_system
     cmd_need 'wget iproute unzip net-tools curl'
-
-    [ -d "/usr/local/SSR-Bash-Python" ] && ssr_status="$GREEN"
-    [ -d "/usr/local/v2ray" ] && v2ray_status="$GREEN"
-    [ -d "/usr/local/ssr_jzdh" ] && ssr_jzdh_status="$GREEN"
-    [ -z "$(lsmod | grep bbr)" ] || bbr_status="$GREEN"
-    [ -d "/usr/local/AriaNG" ] && AriaNG_status="$GREEN"
-    [ -d "/usr/local/frps" ] && frp_status="$GREEN"
-    [ -d "/usr/local/swapfile" ] && swapfile_status="$GREEN"
-#    [ -d "/usr/local/oneindex" ] && oneindex_status="$GREEN"
-    [ -d "/usr/local/openvpn" ] && openvpn_status="$GREEN"
-    [ -d "/usr/local/wireguard" ] && wireguard_status="$GREEN"
-    [ -d "/usr/local/tinyvpn" ] && tinyvpn_status="$GREEN"
-    [ -d "/usr/local/smartdns" ] && smartdns_status="$GREEN"
-    [ -d "/usr/local/tun2socks" ] && tun2socks_status="$GREEN"
-
-    var=1
+	
+	jzdh_add "V2Ray"                    "v2ray"
+	jzdh_add "ssr_jzdh"                 "ssr_jzdh"
+	jzdh_add "BBR"                      "BBR"
+	jzdh_add "AriaNG"                   "AriaNG"
+	jzdh_add "frp"                      "frps"
+	jzdh_add "swap 分区"                "ssr_jzdh"
+	jzdh_add "oneindex"                 "oneindex"
+	jzdh_add "openvpn"                  "openvpn"
+	jzdh_add "wireguard"                "wireguard"
+	jzdh_add "tinyvpn-udp2raw"          "tinyvpn"
+	jzdh_add "smartdns"                 "smartdns"
+	jzdh_add "tun2socks-v2ray 透明代理" "tun2socks"
+	
     colorEcho $BLUE "欢迎使用 JZDH 集合脚本"
-    printf "%3s. 安装 ${ssr_status}SSR${BLANK}\n" "$((var++))"
-    printf "%3s. 安装 ${v2ray_status}V2Ray${BLANK}\n" "$((var++))"
-    printf "%3s. 安装 ${ssr_jzdh_status}ssr_jzdh${BLANK}\n" "$((var++))"
-    printf "%3s. 安装 ${bbr_status}BBR${BLANK}\n" "$((var++))"
-    printf "%3s. 安装 ${AriaNG_status}AriaNG${BLANK}\n" "$((var++))"
-    printf "%3s. 安装 ${frp_status}frp${BLANK}\n" "$((var++))"
-    printf "%3s. 安装 ${swapfile_status}swap 分区${BLANK}\n" "$((var++))"
-#    printf "%3s. 安装 ${oneindex_status}oneindex${BLANK}\n" "$((var++))"
-    printf "%3s. 安装 ${openvpn_status}openvpn${BLANK}\n" "$((var++))"
-    printf "%3s. 安装 ${wireguard_status}wireguard${BLANK}\n" "$((var++))"
-    printf "%3s. 安装 ${tinyvpn_status}tinyvpn-udp2raw${BLANK}\n" "$((var++))"
-    printf "%3s. 安装 ${smartdns_status}smartdns${BLANK}\n" "$((var++))"
-    printf "%3s. 安装 ${tun2socks_status}tun2socks-v2ray 透明代理${BLANK}\n" "$((var++))"
+    var=1
+	echo -e "$JZDH_ZIP" | grep -Ev '^$' | while read zip;do
+		zip_path="$(echo "$zip" | awk '{print $NF}')"
+		zip_name="$(echo "$zip" | awk '{$NF=""; print $0}')"
+		if [ -d "/usr/local/$zip_path" ];then
+			printf "%3s. 安装 ${GREEN}$zip_name${BLANK}\n" "$((var++))"
+		else
+			printf "%3s. 安装 $zip_name\n" "$((var++))"
+		fi
+	done
     echo && colorRead ${YELLOW} '请选择' panel_choice
 
-    for M in $panel_choice;do
-        var=1
-        [ "$M" = "$((var++))" ] && install_ssr
-        [ "$M" = "$((var++))" ] && install_zip v2ray
-        [ "$M" = "$((var++))" ] && install_zip ssr_jzdh
-        [ "$M" = "$((var++))" ] && install_bbr
-        [ "$M" = "$((var++))" ] && install_zip AriaNG
-        [ "$M" = "$((var++))" ] && install_zip frps
-        [ "$M" = "$((var++))" ] && install_zip swapfile
-#        [ "$M" = "$((var++))" ] && install_zip oneindex
-        [ "$M" = "$((var++))" ] && install_zip openvpn
-        [ "$M" = "$((var++))" ] && install_zip wireguard
-        [ "$M" = "$((var++))" ] && install_zip tinyvpn
-        [ "$M" = "$((var++))" ] && install_zip smartdns
-        [ "$M" = "$((var++))" ] && install_zip tun2socks
+    for J in $panel_choice;do
+        install_zip $(echo -e "$JZDH_ZIP" | sed -n "${J}p" | awk '{print $NF}')
     done
 }
 
