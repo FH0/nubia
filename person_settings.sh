@@ -16,7 +16,8 @@ handle_sshd_config() {
 #    echo 'ClientAliveInterval 120' >> /etc/ssh/sshd_config
 #    echo 'ClientAliveCountMax 72000' >> /etc/ssh/sshd_config
     systemctl restart sshd
-}
+    service sshd restart
+} >/dev/null 2>&1
 
 person_bin() {
     mkdir -p /usr/xbin
@@ -89,7 +90,7 @@ clean_iptables(){
     echo -e "[Unit]\nDescription=clean_iptables Service\nAfter=network.target\n\n[Service]\nType=forking\nExecStart=/bin/clean_iptables\n\n[Install]\nWantedBy=multi-user.target" > /etc/systemd/system/clean_iptables.service
     systemctl daemon-reload
     systemctl enable clean_iptables.service
-    clean_iptables
+    /bin/clean_iptables
 } >/dev/null 2>&1
 
 clean_aliyun(){
