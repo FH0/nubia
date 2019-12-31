@@ -81,7 +81,7 @@ panel() {
 	jzdh_add "wireguard"                "wireguard"
 	jzdh_add "tinyvpn-udp2raw"          "tinyvpn"
 	jzdh_add "smartdns"                 "smartdns"
-	jzdh_add "v2ray 透明代理"           "v2ray-proxy"
+	jzdh_add "tun2socks-v2ray 透明代理" "tun2socks"
 	
     colorEcho $BLUE "欢迎使用 JZDH 集合脚本"
     var=1
