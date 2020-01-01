@@ -75,6 +75,9 @@ set_bash() {
     echo "shopt -s histappend" >> /root/.bashrc
     echo "PROMPT_COMMAND='history -a'" >> /root/.bashrc
 
+	#开启 gcc 颜色
+	export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+	
     chmod 644 .bashrc
 }
 
