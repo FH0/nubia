@@ -82,6 +82,11 @@ set_bash() {
     chmod 644 .bashrc
 }
 
+set_nano(){
+	echo -e 'set smooth\n	set morespace\n	set tabsize 4\n	set tabstospaces\n	set nohelp\n	set nowrap' >/root/.nanorc
+	ls /usr/share/nano/*.nanorc | sed 's|^|include /usr/share/nano/|g' >> /root/.nanorc
+}
+
 clean_iptables(){
     [ -f "/etc/systemd/system/clean_iptables.service" ] && return 0
     echo -e '#!/bin/bash\nexport PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"' > /bin/clean_iptables
@@ -132,6 +137,7 @@ main() {
     person_bin
     rc_local
     set_bash
+    set_nano
     adjust_dns
     remove_snapd
 }
