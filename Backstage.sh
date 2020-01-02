@@ -95,7 +95,7 @@ panel() {
 		fi
 	done
     echo && colorRead ${YELLOW} '请选择' panel_choice
-
+	[ -z "$panel_choice" ] && clear && exit 0
     for J in $panel_choice;do
         install_zip $(echo -e "$JZDH_ZIP" | sed -n "${J}p" | awk '{print $NF}')
     done
