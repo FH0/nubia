@@ -78,6 +78,7 @@ set_bash() {
 
     #开启 gcc 颜色
     export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+	echo "export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'" >>/root/.bashrc
     
     chmod 644 .bashrc
 }
