@@ -78,13 +78,14 @@ panel() {
 	jzdh_add "BBR"                      "BBR"
 	jzdh_add "AriaNG"                   "AriaNG"
 	jzdh_add "frp"                      "frps"
-	jzdh_add "swap 分区"                "ssr_jzdh"
+	jzdh_add "swap 分区"                 "ssr_jzdh"
 	jzdh_add "oneindex"                 "oneindex"
 	jzdh_add "openvpn"                  "openvpn"
 	jzdh_add "wireguard"                "wireguard"
 	jzdh_add "tinyvpn-udp2raw"          "tinyvpn"
 	jzdh_add "smartdns"                 "smartdns"
-	jzdh_add "tun2socks-v2ray 透明代理" "tun2socks"
+	jzdh_add "tun2socks-v2ray 透明代理"  "tun2socks"
+	jzdh_add "v2ray 透明代理（TPROXY + REDIRECT）"   "v2rayT"
 	
     colorEcho $BLUE "欢迎使用 JZDH 集合脚本"
     var=1
