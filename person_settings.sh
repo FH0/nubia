@@ -90,7 +90,7 @@ set_bash() {
 }
 
 set_nano(){
-	command -v git >/dev/null && git clone git@github.com:scopatz/nanorc.git /usr/local/share/nano
+	command -v git >/dev/null && git clone https://github.com/scopatz/nanorc.git /usr/local/share/nano
 	echo -e 'set smooth\n	set morespace\n	set tabsize 4\n	set tabstospaces\n	set nohelp\n	set nowrap' >/root/.nanorc
 	ls /usr/share/nano/*.nanorc | sed 's|^|include |g' >> /root/.nanorc
 }
