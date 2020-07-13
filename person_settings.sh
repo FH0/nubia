@@ -15,7 +15,7 @@ handle_sshd_config() {
 
     #关闭 IP 混淆
     grep -q 'HashKnownHosts' /etc/ssh/ssh_config &&
-        sed -i '/HashKnownHosts/c    HashKnownHosts no' /etc/ssh/ssh_config
+    sed -i '/HashKnownHosts/c    HashKnownHosts no' /etc/ssh/ssh_config
     systemctl restart sshd
     service sshd restart
 } >/dev/null 2>&1
