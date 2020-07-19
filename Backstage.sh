@@ -73,7 +73,7 @@ jzdh_add() {
 
 panel() {
     check_system
-    cmd_need 'wget iproute unzip net-tools curl'
+    cmd_need 'iptables wget iproute unzip net-tools curl'
 
     jzdh_add "V2Ray" "v2ray"
     jzdh_add "ssr_jzdh" "ssr_jzdh"
