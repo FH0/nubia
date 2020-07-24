@@ -88,7 +88,7 @@ panel() {
     jzdh_add "smartdns" "smartdns"
     jzdh_add "tun2socks-v2ray 透明代理" "tun2socks"
     jzdh_add "v2ray 透明代理（TPROXY + REDIRECT）" "v2rayT"
-    # jzdh_add "ygk" "ygk"
+    jzdh_add "ygk" "ygk"
 
     colorEcho $BLUE "欢迎使用 JZDH 集合脚本"
     var=1
