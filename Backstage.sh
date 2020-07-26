@@ -56,13 +56,17 @@ install_zip() {
     bash $wp/install.sh
 }
 
-check_system() {
+check_available() {
     clear
     if [ -z "$(command -v yum apt-get)" ]; then
         colorEcho $RED "不支持的操作系统！"
         exit 1
     elif ! uname -m | grep -q 'x86_64'; then
         colorEcho $RED "不支持的系统架构！"
+        exit 1
+    fi
+    if [ "$(id -u)" != "0" ]; then
+        colorEcho $RED "请切换到root用户后再执行此脚本！"
         exit 1
     fi
 }
@@ -72,7 +76,7 @@ jzdh_add() {
 }
 
 panel() {
-    check_system
+    check_available
     cmd_need 'iptables wget iproute unzip net-tools curl'
 
     jzdh_add "V2Ray" "v2ray"
