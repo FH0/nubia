@@ -69,7 +69,7 @@ check_available() {
         colorEcho $RED "请切换到root用户后再执行此脚本！"
         exit 1
     fi
-    if [ "$(uname -r | awk -F '.' '{print $1}')" -le "3" ]; then
+    if [ "$(uname -r | awk -F '.' '{print $1}')" -lt "3" ]; then
         colorEcho $RED "内核太老，请升级内核或更换新系统！"
         exit 1
     fi
