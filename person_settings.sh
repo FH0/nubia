@@ -15,7 +15,7 @@ handle_sshd_config() {
 
     #关闭 IP 混淆
     grep -q 'HashKnownHosts' /etc/ssh/ssh_config &&
-    sed -i '/HashKnownHosts/c    HashKnownHosts no' /etc/ssh/ssh_config
+        sed -i '/HashKnownHosts/c    HashKnownHosts no' /etc/ssh/ssh_config
     systemctl restart sshd
     service sshd restart
 } >/dev/null 2>&1
@@ -60,6 +60,7 @@ set_bash() {
     country=$(curl -sL http://ip-api.com/json | sed 's|.*"countryCode":"\(..\)".*|\1|')
     system="debian" && command -v yum >/dev/null && system="centos"
     sed -i '/JZDH/d' .bashrc
+
     echo -e "PS1='\\\n\\\[\\\e[47;30m\\\][$country]\\\u@$system\\\[\\\e[m\\\]:[\$(pwd)]\\\n\\\\$ ' #JZDH" >>.bashrc
     echo 'LS_COLORS="rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:" #JZDH' >>.bashrc
     echo 'alias ls="ls --color=auto" #JZDH' >>.bashrc
@@ -69,22 +70,18 @@ set_bash() {
     echo "export PATH=\"\$PATH:/usr/xbin\" #JZDH" >>/root/.bashrc
 
     #默认记录 500 条，调整成 100,000 条
-    sed -i '/HISTSIZE/d' /root/.bashrc
-    echo 'HISTSIZE=100000' >>/root/.bashrc
+    echo 'HISTSIZE=100000 #JZDH' >>/root/.bashrc
 
     #记录命令的执行时间
-    sed -i '/HISTTIMEFORMAT/d' /root/.bashrc
-    echo "HISTTIMEFORMAT='%F %T  '" >>/root/.bashrc
+    echo "HISTTIMEFORMAT='%F %T  ' #JZDH" >>/root/.bashrc
 
     #实时记录
-    sed -i '/histappend/d' /root/.bashrc
-    sed -i '/PROMPT_COMMAND/d' /root/.bashrc
-    echo "shopt -s histappend" >>/root/.bashrc
-    echo "PROMPT_COMMAND='history -a'" >>/root/.bashrc
+    echo "shopt -s histappend #JZDH" >>/root/.bashrc
+    echo "PROMPT_COMMAND='history -a' #JZDH" >>/root/.bashrc
 
     #开启 gcc 颜色
     export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-    echo "export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'" >>/root/.bashrc
+    echo "export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01' #JZDH" >>/root/.bashrc
 
     chmod 644 .bashrc
 }
