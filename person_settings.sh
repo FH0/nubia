@@ -135,6 +135,21 @@ close_selinux() {
     sed -i '/SELINUX=/cSELINUX=disabled' /etc/selinux/config
 } >/dev/null 2>&1
 
+set_timezone() {
+    if [ -e "/etc/localtime" -a -e "/usr/share/zoneinfo/Asia/Shanghai" ]; then
+        ls -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+    fi
+}
+
+install_command_not_found() {
+    if command -v apt >/dev/null 2>&1; then
+        apt update
+        apt install command-not-found apt-file -y
+        apt-file update
+        update-command-not-found
+    fi
+}
+
 main() {
     clean_iptables
     close_selinux
@@ -146,6 +161,8 @@ main() {
     set_nano
     adjust_dns
     remove_snapd
+    set_timezone
+    install_command_not_found
 }
 
 main
