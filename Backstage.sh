@@ -80,13 +80,13 @@ install_zip() {
 }
 
 check_environment() {
-    if [ -z "$(command -v yum apt-get)" ]; then
-        colorEcho $RED "不支持的操作系统！"
-        exit 1
-    elif ! uname -m | grep -q 'x86_64'; then
-        colorEcho $RED "不支持的系统架构！"
-        exit 1
-    fi
+    # if [ -z "$(command -v yum apt-get)" ]; then
+    #     colorEcho $RED "不支持的操作系统！"
+    #     exit 1
+    # elif ! uname -m | grep -q 'x86_64'; then
+    #     colorEcho $RED "不支持的系统架构！"
+    #     exit 1
+    # fi
 
     if [ "$(id -u)" != "0" ]; then
         colorEcho $RED "请切换到root用户后再执行此脚本！"
@@ -107,7 +107,7 @@ panel() {
     clear
 
     check_environment
-    cmd_need 'iptables wget ss unzip netstat curl'
+    cmd_need 'iptables unzip netstat curl'
 
     jzdh_add "V2Ray" "v2ray"
     jzdh_add "ssr_jzdh" "ssr_jzdh"
