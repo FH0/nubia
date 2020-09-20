@@ -94,7 +94,7 @@ check_environment() {
     fi
 
     if [ "$(uname -r | awk -F '.' '{print $1}')" -lt "3" ]; then
-        colorEcho $RED "内核太老，请升级内核或更换新系统！"
+        colorEcho $RED "内核太老，请升级内核或更新系统！"
         exit 1
     fi
 }
