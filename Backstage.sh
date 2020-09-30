@@ -70,7 +70,7 @@ install_zip() {
         colorEcho $YELLOW "正在卸载 $key..."
         bash $wp/uninstall.sh >/dev/null 2>&1
     fi
-    colorEcho $YELLOW "正在安装 $key 到 $wp..."
+    colorEcho $YELLOW "正在安装 $key 到 $wp ..."
     curl -sOL https://raw.githubusercontent.com/FH0/nubia/master/server_script/$zip
     rm -rf $wp
     mkdir -p $wp
