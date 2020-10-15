@@ -114,7 +114,7 @@ panel() {
     jzdh_add "BBR" "BBR"
     jzdh_add "AriaNG" "AriaNG"
     jzdh_add "frp" "frps"
-    jzdh_add "swap 分区" "ssr_jzdh"
+    jzdh_add "swap 分区" "swapfile"
     jzdh_add "oneindex" "oneindex"
     jzdh_add "openvpn" "openvpn"
     jzdh_add "wireguard" "wireguard"
