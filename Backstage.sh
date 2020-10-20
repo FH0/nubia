@@ -67,7 +67,7 @@ install_zip() {
     if [ -d "/usr" -a ! -z "$(command apt-get yum 2>/dev/null)" ]; then
         wp="/usr/local/$key"
     else
-        colorRead $YELLOW "非标准的 Linux 环境，请输入安装目录，例如：/tmp " wp
+        colorRead $YELLOW "请输入安装目录，例如：/tmp " wp
         [ -z "$wp" ] && exit 1
         wp=$(echo "$wp/$key" | sed 's|///*|/|g') # 连续的 / 变为一个
     fi
