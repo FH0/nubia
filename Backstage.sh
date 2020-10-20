@@ -64,7 +64,7 @@ cmd_need() {
 
 install_zip() {
     key="$1"
-    if [ -d "/usr" -a ! -z "$(command -v apt-get yum >/dev/null)" ]; then
+    if [ -d "/usr" -a ! -z "$(command -v apt-get yum)" ]; then
         wp="/usr/local/$key"
     else
         colorRead $YELLOW "请输入安装目录，例如：/tmp " wp
@@ -87,14 +87,6 @@ install_zip() {
 }
 
 check_environment() {
-    # if [ -z "$(command -v yum apt-get)" ]; then
-    #     colorEcho $RED "不支持的操作系统！"
-    #     exit 1
-    # elif ! uname -m | grep -q 'x86_64'; then
-    #     colorEcho $RED "不支持的系统架构！"
-    #     exit 1
-    # fi
-
     if [ "$(id -u)" != "0" ]; then
         colorEcho $RED "请切换到root用户后再执行此脚本！"
         exit 1
