@@ -28,9 +28,9 @@ cmd_need() {
     exit_flag=0
 
     for cmd in $1; do
-        if command $cmd 2>&1 | grep -q ": not found"; then
+        if command -v $cmd | grep -q ": not found"; then
             # check if auto install
-            if command apt >/dev/null 2>&1; then
+            if command apt >/dev/null; then
                 # apt install package need update first
                 if [ "update_flag" = "0" ]; then
                     apt update >/dev/null 2>&1
@@ -43,7 +43,7 @@ cmd_need() {
                     apt install $package -y >/dev/null 2>&1
                     continue
                 fi
-            elif command yum >/dev/null 2>&1; then
+            elif command yum >/dev/null; then
                 package=$(yum whatprovides *bin/$cmd 2>&1 | grep " : " | awk -F' : ' '{print $1}' | sed -n '1p')
                 if [ ! -z "$package" ]; then
                     colorEcho $BLUE "正在安装 $cmd ..."
@@ -64,7 +64,7 @@ cmd_need() {
 
 install_zip() {
     key="$1"
-    if [ -d "/usr" -a ! -z "$(command apt-get yum 2>/dev/null)" ]; then
+    if [ -d "/usr" -a ! -z "$(command -v apt-get yum >/dev/null)" ]; then
         wp="/usr/local/$key"
     else
         colorRead $YELLOW "请输入安装目录，例如：/tmp " wp
