@@ -64,7 +64,13 @@ cmd_need() {
 
 install_zip() {
     key="$1"
-    wp="/usr/local/$key"
+    if [ -d "/usr" -a ! -z "$(type apt-get yum 2>/dev/null)" ]; then
+        wp="/usr/local/$key"
+    else
+        colorRead $YELLOW "非标准的 Linux 环境，请输入安装目录，例如：/tmp " wp
+        [ -z "$wp" ] && exit 1
+        wp=$(echo "$wp/$key" | sed 's|///*|/|g') # 连续的 / 变为一个
+    fi
     zip="$key.zip"
     if [ -d "$wp" ]; then
         colorEcho $YELLOW "正在卸载 $key..."
@@ -76,6 +82,7 @@ install_zip() {
     mkdir -p $wp
     unzip -q -o $zip -d $wp
     rm -f $zip
+    sed -i "s|wp=.*|wp=\"$wp\"|g" $wp/*.sh # 修改路径
     bash $wp/install.sh
 }
 
