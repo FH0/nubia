@@ -28,9 +28,9 @@ cmd_need() {
     exit_flag=0
 
     for cmd in $1; do
-        if type $cmd 2>&1 | grep -q ": not found"; then
+        if command $cmd 2>&1 | grep -q ": not found"; then
             # check if auto install
-            if type apt >/dev/null; then
+            if command apt >/dev/null 2>&1; then
                 # apt install package need update first
                 if [ "update_flag" = "0" ]; then
                     apt update >/dev/null 2>&1
@@ -43,7 +43,7 @@ cmd_need() {
                     apt install $package -y >/dev/null 2>&1
                     continue
                 fi
-            elif type yum >/dev/null; then
+            elif command yum >/dev/null 2>&1; then
                 package=$(yum whatprovides *bin/$cmd 2>&1 | grep " : " | awk -F' : ' '{print $1}' | sed -n '1p')
                 if [ ! -z "$package" ]; then
                     colorEcho $BLUE "正在安装 $cmd ..."
@@ -64,7 +64,7 @@ cmd_need() {
 
 install_zip() {
     key="$1"
-    if [ -d "/usr" -a ! -z "$(type apt-get yum 2>/dev/null)" ]; then
+    if [ -d "/usr" -a ! -z "$(command apt-get yum 2>/dev/null)" ]; then
         wp="/usr/local/$key"
     else
         colorRead $YELLOW "非标准的 Linux 环境，请输入安装目录，例如：/tmp " wp
@@ -107,7 +107,7 @@ check_environment() {
 }
 
 jzdh_add() {
-    JZDH_ZIP+="$1 $2\n"
+    JZDH_ZIP="$JZDH_ZIP$1 $2\n"
 }
 
 panel() {
