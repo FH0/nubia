@@ -19,7 +19,7 @@ colorRead() {
     OUTPUT=$2
     VARIABLE=$3
     echo -e -n "$COLOR$OUTPUT${BLANK}: "
-    read $VARIABLE
+    read $VARIABLE </dev/tty
     echo
 }
 
