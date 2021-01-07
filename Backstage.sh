@@ -123,6 +123,7 @@ panel() {
     jzdh_add "v2ray 透明代理（TPROXY + REDIRECT）" "v2rayT"
     jzdh_add "ygk" "ygk"
     jzdh_add "l_ygk（linux 客户端）" "l_ygk"
+    jzdh_add "stn" "stn"
 
     colorEcho $BLUE "欢迎使用 JZDH 集合脚本"
     var=1
