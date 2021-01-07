@@ -30,7 +30,7 @@ cmd_need() {
     for cmd in $1; do
         if ! command -v $cmd >/dev/null 2>&1; then
             # check if auto install
-            if command apt >/dev/null; then
+            if command apt >/dev/null 2>&1; then
                 # apt install package need update first
                 if [ "update_flag" = "0" ]; then
                     apt update >/dev/null 2>&1
@@ -43,7 +43,7 @@ cmd_need() {
                     apt install $package -y >/dev/null 2>&1
                     continue
                 fi
-            elif command yum >/dev/null; then
+            elif command yum >/dev/null 2>&1; then
                 package=$(yum whatprovides *bin/$cmd 2>&1 | grep " : " | awk -F' : ' '{print $1}' | sed -n '1p')
                 if [ ! -z "$package" ]; then
                     colorEcho $BLUE "正在安装 $cmd ..."
