@@ -28,7 +28,7 @@ cmd_need() {
     exit_flag=0
 
     for cmd in $1; do
-        if command -v $cmd | grep -q ": not found"; then
+        if ! command -v $cmd >/dev/null 2>&1; then
             # check if auto install
             if command apt >/dev/null; then
                 # apt install package need update first
