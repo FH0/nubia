@@ -87,7 +87,7 @@ install_zip() {
 }
 
 check_environment() {
-    if [ "$(id -u)" != "0" ]; then
+    if [ "${EUID:-$(id -u)}" != "0" ]; then
         colorEcho $RED "请切换到root用户后再执行此脚本！"
         exit 1
     fi
