@@ -123,8 +123,8 @@ panel() {
     jzdh_add "v2ray 透明代理（TPROXY + REDIRECT）" "v2rayT"
     jzdh_add "ygk" "ygk"
     jzdh_add "l_ygk（linux 客户端）" "l_ygk"
-    jzdh_add "shadowsocks-rust" "shadowsocks-rust"
-    jzdh_add "l-shadowsocks-rust（linux 客户端）" "l-shadowsocks-rust"
+    jzdh_add "stn" "stn"
+    jzdh_add "l-stn（linux 客户端）" "l-stn"
     jzdh_add "shadowsocks-rust" "shadowsocks-rust"
 
     colorEcho $BLUE "欢迎使用 JZDH 集合脚本"
