@@ -73,7 +73,7 @@ install_zip() {
     fi
     zip="$key.zip"
     if [ -d "$wp" ]; then
-        colorEcho $YELLOW "正在卸载 $key..."
+        colorEcho $YELLOW "正在卸载 $key ..."
         bash $wp/uninstall.sh >/dev/null 2>&1
     fi
     colorEcho $YELLOW "正在安装 $key 到 $wp ..."
@@ -88,7 +88,7 @@ install_zip() {
 
 check_environment() {
     if [ "${EUID:-$(id -u)}" != "0" ]; then
-        colorEcho $RED "请切换到root用户后再执行此脚本！"
+        colorEcho $RED "请切换到 root 用户后再执行此脚本！"
         exit 1
     fi
 
@@ -123,8 +123,9 @@ panel() {
     jzdh_add "v2ray 透明代理（TPROXY + REDIRECT）" "v2rayT"
     jzdh_add "ygk" "ygk"
     jzdh_add "l_ygk（linux 客户端）" "l_ygk"
-    jzdh_add "stn" "stn"
-    jzdh_add "l-stn（linux 客户端）" "l-stn"
+    jzdh_add "shadowsocks-rust" "shadowsocks-rust"
+    jzdh_add "l-shadowsocks-rust（linux 客户端）" "l-shadowsocks-rust"
+    jzdh_add "shadowsocks-rust" "shadowsocks-rust"
 
     colorEcho $BLUE "欢迎使用 JZDH 集合脚本"
     var=1
