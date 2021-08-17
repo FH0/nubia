@@ -126,6 +126,7 @@ panel() {
     jzdh_add "stn" "stn"
     jzdh_add "l-stn（linux 客户端）" "l-stn"
     jzdh_add "shadowsocks-rust" "shadowsocks-rust"
+    jzdh_add "qbittorrent" "qbittorrent"
 
     colorEcho $BLUE "欢迎使用 JZDH 集合脚本"
     var=1
