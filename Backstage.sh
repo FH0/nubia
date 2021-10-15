@@ -108,8 +108,7 @@ panel() {
     check_environment
     cmd_need 'iptables unzip netstat curl'
 
-    jzdh_add "V2Ray" "v2ray"
-    jzdh_add "ssr_jzdh" "ssr_jzdh"
+    jzdh_add "xray" "xray"
     jzdh_add "BBR" "BBR"
     jzdh_add "AriaNG" "AriaNG"
     jzdh_add "frp" "frps"
@@ -119,8 +118,8 @@ panel() {
     jzdh_add "wireguard" "wireguard"
     jzdh_add "tinyvpn-udp2raw" "tinyvpn"
     jzdh_add "smartdns" "smartdns"
-    jzdh_add "tun2socks-v2ray 透明代理" "tun2socks"
-    jzdh_add "v2ray 透明代理（TPROXY + REDIRECT）" "v2rayT"
+    jzdh_add "tun2socks-xray 透明代理" "tun2socks"
+    jzdh_add "xray 透明代理（TPROXY + REDIRECT）" "xrayT"
     jzdh_add "ygk" "ygk"
     jzdh_add "l_ygk（linux 客户端）" "l_ygk"
     jzdh_add "stn" "stn"
