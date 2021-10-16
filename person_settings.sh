@@ -97,7 +97,6 @@ install_person_bin() {
 }
 
 install_command_not_found() {
-    apt update
     apt install command-not-found apt-file -y
     apt-file update
     update-command-not-found
@@ -122,12 +121,12 @@ install_netstat_unzip() {
     apt install net-tools unzip -y
 }
 
+apt update
 set_sshd
 set_bash
 set_timezone_and_language
 set_grub2
 set_console_ignore_case
-set_history_search
 set_systemd-resolve
 install_person_bin
 install_command_not_found
