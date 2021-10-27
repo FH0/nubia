@@ -62,7 +62,7 @@ cmd_need() {
     fi
 }
 
-install_zip() {
+install_tool() {
     key="$1"
     if [ -d "/usr" -a ! -z "$(command -v apt-get yum)" ]; then
         wp="/usr/local/$key"
@@ -71,17 +71,16 @@ install_zip() {
         [ -z "$wp" ] && exit 1
         wp=$(echo "$wp/$key" | sed 's|///*|/|g') # 连续的 / 变为一个
     fi
-    zip="$key.zip"
+    file="$key.tar"
     if [ -d "$wp" ]; then
         colorEcho $YELLOW "正在卸载 $key ..."
         bash $wp/uninstall.sh >/dev/null 2>&1
     fi
     colorEcho $YELLOW "正在安装 $key 到 $wp ..."
-    curl -OL https://raw.githubusercontent.com/FH0/nubia/master/server_script/$zip
     rm -rf $wp
     mkdir -p $wp
-    unzip -q -o $zip -d $wp
-    rm -f $zip
+    curl -L "https://raw.githubusercontent.com/FH0/nubia/master/linux-tools/$file" |
+        tar -C $wp -xf-
     sed -i "s|wp=.*|wp=\"$wp\"|g" $wp/*.sh # 修改路径
     bash $wp/install.sh
 }
@@ -93,55 +92,40 @@ check_environment() {
     fi
 
     if [ "$(uname -r | awk -F '.' '{print $1}')" -lt "3" ]; then
-        colorEcho $RED "内核太老，请升级内核或更新系统！"
+        colorEcho $RED "内核不支持，请升级内核或更新系统！"
         exit 1
     fi
 }
 
-jzdh_add() {
-    JZDH_ZIP="$JZDH_ZIP$1 $2\n"
+tools_add() {
+    tools="$tools$1 $2\n"
 }
 
 panel() {
     clear
 
     check_environment
-    cmd_need 'iptables unzip netstat curl'
+    cmd_need 'iptables tar netstat curl'
 
-    jzdh_add "xray" "xray"
-    jzdh_add "BBR" "BBR"
-    jzdh_add "AriaNG" "AriaNG"
-    jzdh_add "frp" "frps"
-    jzdh_add "swap 分区" "swapfile"
-    jzdh_add "oneindex" "oneindex"
-    jzdh_add "openvpn" "openvpn"
-    jzdh_add "wireguard" "wireguard"
-    jzdh_add "tinyvpn-udp2raw" "tinyvpn"
-    jzdh_add "smartdns" "smartdns"
-    jzdh_add "tun2socks-v2ray 透明代理" "tun2socks"
-    jzdh_add "xray-tproxy 透明代理" "xray-tproxy"
-    jzdh_add "ygk" "ygk"
-    jzdh_add "l_ygk（linux 客户端）" "l_ygk"
-    jzdh_add "stn" "stn"
-    jzdh_add "l-stn（linux 客户端）" "l-stn"
-    jzdh_add "shadowsocks-rust" "shadowsocks-rust"
-    jzdh_add "qbittorrent" "qbittorrent"
+    for tool in $(curl -L "http://github.com/FH0/nubia/tree/master/linux-tools" | grep -Eo '[0-9a-zA-Z_-]+\.tar' | sort -u | sed 's|\.tar||g'); do
+        tools_add "$tool" "$tool"
+    done
 
     colorEcho $BLUE "欢迎使用 JZDH 集合脚本"
     var=1
-    echo -e "$JZDH_ZIP" | grep -Ev '^$' | while read zip; do
-        zip_path="$(echo "$zip" | awk '{print $NF}')"
-        zip_name="$(echo "$zip" | awk '{$NF=""; print $0}')"
-        if [ -d "/usr/local/$zip_path" ]; then
-            printf "%3s. 安装 ${GREEN}$zip_name${BLANK}\n" "$((var++))"
+    echo -e "$tools" | grep -Ev '^$' | while read tool; do
+        tool_path="$(echo "$tool" | awk '{print $NF}')"
+        tool_name="$(echo "$tool" | awk '{$NF=""; print $0}')"
+        if [ -d "/usr/local/$tool_path" ]; then
+            printf "%3s. 安装 ${GREEN}$tool_name${BLANK}\n" "$((var++))"
         else
-            printf "%3s. 安装 $zip_name\n" "$((var++))"
+            printf "%3s. 安装 $tool_name\n" "$((var++))"
         fi
     done
     echo && colorRead ${YELLOW} '请选择' panel_choice
     [ -z "$panel_choice" ] && clear && exit 0
     for J in $panel_choice; do
-        install_zip $(echo -e "$JZDH_ZIP" | sed -n "${J}p" | awk '{print $NF}')
+        install_tool $(echo -e "$tools" | sed -n "${J}p" | awk '{print $NF}')
     done
 }
 
