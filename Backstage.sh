@@ -22,30 +22,22 @@ color_print() {
             output = output substr(input, 0, i - 1)
 
             c = substr(input, i + 1, 1)
-            switch(c) {
-                case "a":
-                    output = output "\a"
-                    break
-                case "b":
-                    output = output "\b"
-                    break
-                case "f":
-                    output = output "\f"
-                    break
-                case "n":
-                    output = output "\n"
-                    break
-                case "r":
-                    output = output "\r"
-                    break
-                case "t":
-                    output = output "\t"
-                    break
-                case "v":
-                    output = output "\v"
-                    break
-                default:
-                    output = output c
+            if(c == "a") {
+                output = output "\a"
+            } else if (c == "b") {
+                output = output "\b"
+            } else if (c == "f") {
+                output = output "\f"
+            } else if (c == "n") {
+                output = output "\n"
+            } else if (c == "r") {
+                output = output "\r"
+            } else if (c == "t") {
+                output = output "\t"
+            } else if (c == "v") {
+                output = output "\v"
+            } else {
+                output = output c
             }
 
             input = substr(input, i + 2)
@@ -81,6 +73,11 @@ color_print() {
         for(i = 1; i < ARGC; i += 2) {
             color = ARGV[i]
             output = ARGV[i + 1]
+
+            # default no_color
+            if (color == "") {
+                color = "no_color"
+            }
 
             # check color exists
             if(!(color in colors)) {
