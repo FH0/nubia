@@ -46,7 +46,7 @@ color_print() {
 
         return output
     }
-    
+
     BEGIN {
         colors["no_color"] = "\033[0m"
         colors["black"] = "\033[0;30m"
@@ -69,7 +69,7 @@ color_print() {
         if(ARGC < 3 || ARGC % 2 == 0) {
             red_exit("The number of parameters must be no less than 3 and an odd number.\n")
         }
-        
+
         for(i = 1; i < ARGC; i += 2) {
             color = ARGV[i]
             output = ARGV[i + 1]
@@ -110,43 +110,16 @@ color_read() {
     fi
 }
 
-cmd_need() {
-    update_flag=0
-    exit_flag=0
-
-    for cmd in $1; do
-        if ! command -v $cmd >/dev/null 2>&1; then
-            # check if auto install
-            if command -v apt >/dev/null 2>&1; then
-                # apt install package need update first
-                if [ "update_flag" = "0" ]; then
-                    apt update >/dev/null 2>&1
-                    update_flag=1
-                fi
-
-                package=$(dpkg -S bin/$cmd 2>&1 | grep "bin/$cmd$" | awk -F':' '{print $1}')
-                if [ ! -z "$package" ]; then
-                    color_println "cyan" "正在安装 $cmd ..."
-                    apt install $package -y >/dev/null 2>&1
-                    continue
-                fi
-            elif command -v yum >/dev/null 2>&1; then
-                package=$(yum whatprovides *bin/$cmd 2>&1 | grep " : " | awk -F' : ' '{print $1}' | sed -n '1p')
-                if [ ! -z "$package" ]; then
-                    color_println "cyan" "正在安装 $cmd ..."
-                    yum install $package -y >/dev/null 2>&1
-                    continue
-                fi
-            fi
-
-            color_println "red" "找不到 $cmd 命令"
-            exit_flag=1
-        fi
-    done
-
-    if [ "$exit_flag" = "1" ]; then
+package_need() {
+    if !command -v apt >/dev/null 2>&1; then
+        color_println "red" "请先安装 $package"
         exit 1
     fi
+    if dpkg -l $@ >/dev/null 2>&1; then
+        return 0
+    fi
+    apt update
+    apt install $@ -y
 }
 
 install_tool() {
@@ -192,7 +165,7 @@ panel() {
     clear
 
     check_environment
-    cmd_need 'iptables tar netstat curl'
+    package_need tar net-tools
 
     for tool in $(curl -L "http://github.com/FH0/nubia/tree/master/linux-tools" | grep -Eo '[0-9a-zA-Z_-]+\.tar' | sort -u | sed 's|\.tar||g'); do
         tools_add "$tool" "$tool"
