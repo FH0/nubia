@@ -34,6 +34,7 @@ alias grep="grep --color=auto"
 
 # change .bash_history record number(default: 500)
 export HISTSIZE=500000
+export HISTFILESIZE=500000
 
 # record command execution time
 export HISTTIMEFORMAT='%F %T  '
