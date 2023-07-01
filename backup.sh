@@ -218,9 +218,7 @@ echo 'export GOROOT="/usr/local/go" PATH="$PATH:/usr/local/go/bin:'$HOME'/go/bin
 mkdir -p $GOPATH/src $GOPATH/pkg $GOPATH/bin
 
 #install openwrt-mips-sdk
-wget "https://www.pangubox.com/pandorabox/19.01/targets/ralink/mt7620/PandoraBox-SDK-ralink-mt7620_gcc-5.5.0_uClibc-1.0.x.Linux-x86_64-2018-12-31-git-4b6a3d5ca.tar.xz"
-tar xf PandoraBox-SDK-ralink-mt7620_gcc-5.5.0_uClibc-1.0.x.Linux-x86_64-2018-12-31-git-4b6a3d5ca.tar.xz
-rm -rf /usr/local/openwrt-mips PandoraBox-SDK-ralink-mt7620_gcc-5.5.0_uClibc-1.0.x.Linux-x86_64-2018-12-31-git-4b6a3d5ca.tar.xz
+curl -L "https://www.pangubox.com/pandorabox/19.01/targets/ralink/mt7620/PandoraBox-SDK-ralink-mt7620_gcc-5.5.0_uClibc-1.0.x.Linux-x86_64-2018-12-31-git-4b6a3d5ca.tar.xz" | tar xJ
 mv PandoraBox-SDK-ralink-mt7620_gcc-5.5.0_uClibc-1.0.x.Linux-x86_64-2018-12-31-git-4b6a3d5ca /usr/local/openwrt-mips
 export PATH="$PATH:/usr/local/openwrt-mips/staging_dir/toolchain-mipsel_24kec+dsp_gcc-5.5.0_uClibc-1.0.x/bin"
 echo 'export PATH="$PATH:/usr/local/openwrt-mips/staging_dir/toolchain-mipsel_24kec+dsp_gcc-5.5.0_uClibc-1.0.x/bin"' >>~/.bashrc
@@ -1244,6 +1242,15 @@ curl -L 'https://github.com/git/git/archive/refs/tags/v2.39.2.tar.gz' | tar xz
 cd git-2.39.2
 # yum install -y curl-devel expat-devel gettext-devel openssl-devel zlib-devel
 make prefix=/usr install -j$(nproc)
+rm -rf $(pwd)
+cd ..
+
+# aarch64-linux-gnu-gdb
+curl -L "https://ftp.gnu.org/gnu/gdb/gdb-13.1.tar.xz" | tar xJ
+cd gdb-13.1
+./configure --target=aarch64-linux-gnu --prefix=/usr/local
+make -j$(nproc)
+make install -j$(nproc)
 rm -rf $(pwd)
 cd ..
 
