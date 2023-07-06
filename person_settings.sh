@@ -49,6 +49,17 @@ fi
 # cd ignore file
 complete -d cd
 
+# remove windows path
+export PATH=$(echo -n "$PATH" | tr ':' '\n' | grep -Ev '^/mnt' | tr '\n' ':' | sed 's|:$||')
+
+# set proxy
+# gateway_ip=$(ip route | sed -n '1p' | awk '{print $3}')
+# export http_proxy=http://$gateway_ip:10809
+# export https_proxy=http://$gateway_ip:10809
+# export no_proxy=localhost,127.0.0.1
+# git config --global http.proxy http://$gateway_ip:10809
+# git config --global https.proxy http://$gateway_ip:10809
+
 # clean console information
 clear
 EOF
@@ -70,8 +81,11 @@ set_grub2() {
     update-grub2
 }
 
-set_console_ignore_case() {
-    echo "set completion-ignore-case on" >>/root/.inputrc
+set_console_input() {
+    cat >>/root/.inputrc <<EOF
+set completion-ignore-case on
+set enable-bracketed-paste off
+EOF
 }
 
 install_person_bin() {
@@ -97,12 +111,6 @@ install_person_bin() {
     echo 'export PATH="$PATH:/usr/xbin"' >>/root/.bashrc
 }
 
-install_command_not_found() {
-    apt install command-not-found apt-file -y
-    apt-file update
-    update-command-not-found
-}
-
 install_bash_completion() {
     apt install bash-completion -y
     cat >>/etc/bash.bashrc <<EOF
@@ -113,8 +121,8 @@ fi
 EOF
 }
 
-install_netstat_unzip() {
-    apt install net-tools unzip curl -y
+install_common_commands() {
+    apt install net-tools unzip curl ripgrep bc -y
 }
 
 apt update
@@ -122,8 +130,7 @@ set_sshd
 set_bash
 set_timezone_and_language
 set_grub2
-set_console_ignore_case
+set_console_input
 install_person_bin
-install_command_not_found
 install_bash_completion
-install_netstat_unzip_curl
+install_common_commands
