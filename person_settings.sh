@@ -52,17 +52,26 @@ complete -d cd
 # remove windows path
 export PATH=$(echo -n "$PATH" | tr ':' '\n' | grep -Ev '^/mnt' | tr '\n' ':' | sed 's|:$||')
 
-# set proxy
-# gateway_ip=$(ip route | sed -n '1p' | awk '{print $3}')
-# export http_proxy=http://$gateway_ip:10809
-# export https_proxy=http://$gateway_ip:10809
-# export no_proxy=localhost,127.0.0.1
-# git config --global http.proxy http://$gateway_ip:10809
-# git config --global https.proxy http://$gateway_ip:10809
-
 # clean console information
 clear
 EOF
+
+    if uname -r | grep -q 'WSL'; then
+        cat >>.bashrc <<EOF
+# set proxy
+gateway_ip=$(ip route | sed -n '1p' | awk '{print $3}')
+export http_proxy=http://$gateway_ip:10809
+export https_proxy=http://$gateway_ip:10809
+export no_proxy=localhost,127.0.0.1
+git config --global http.proxy http://$gateway_ip:10809
+git config --global https.proxy http://$gateway_ip:10809
+EOF
+
+        (
+            crontab -l
+            echo '*/5 * * * * hwclock -s'
+        ) | crontab -
+    fi
 
     chmod 644 .bashrc
 }
