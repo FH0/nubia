@@ -131,7 +131,7 @@ EOF
 }
 
 install_common_commands() {
-    apt install net-tools unzip curl ripgrep bc -y
+    apt install net-tools unzip curl ripgrep bc tree socat -y
 }
 
 apt update

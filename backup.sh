@@ -1259,6 +1259,14 @@ apt install python3-pip -y
 pip3 install aioquic
 pip3 install quicly
 
+# go-nats
+git clone 'https://github.com/enobufs/go-nats.git' --depth=1
+cd go-nats
+go build -ldflags "-s -w" -o /usr/local/bin/nats-server
+GOARCH=arm64 go build -ldflags "-s -w" -o /usr/local/bin/nats-server-arm64
+rm -rf $(pwd)
+cd ..
+
 cd /chroot
 mount --bind /dev dev
 mount --bind /dev/pts dev/pts
