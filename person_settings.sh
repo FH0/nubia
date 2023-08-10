@@ -57,15 +57,15 @@ clear
 EOF
 
     if uname -r | grep -q 'WSL'; then
-        cat >>.bashrc <<EOF
+        echo '
 # set proxy
-gateway_ip=$(ip route | sed -n '1p' | awk '{print $3}')
+gateway_ip=$(ip route | grep -Eo -m1 "([0-9]{1,3}\.){3}[0-9]{1,3}")
 export http_proxy=http://$gateway_ip:10809
 export https_proxy=http://$gateway_ip:10809
 export no_proxy=localhost,127.0.0.1
 git config --global http.proxy http://$gateway_ip:10809
 git config --global https.proxy http://$gateway_ip:10809
-EOF
+' >>.bashrc
 
         (
             crontab -l
