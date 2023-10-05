@@ -62,7 +62,12 @@ EOF
 gateway_ip=$(ip route | grep -Eo -m1 "([0-9]{1,3}\.){3}[0-9]{1,3}")
 export http_proxy=http://$gateway_ip:10809
 export https_proxy=http://$gateway_ip:10809
-export no_proxy=localhost,127.0.0.1
+if [ -f "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe" ]; then
+    windows_no_proxy=$(/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe "Get-NetIPAddress -AddressFamily IPv4 | Select-Object -ExpandProperty IPAddress" | tr -d "\r" | tr "\n" "," | sed "s|,$||g")
+    export no_proxy=localhost,$windows_no_proxy
+else
+    export no_proxy=localhost,127.0.0.1
+fi
 git config --global http.proxy http://$gateway_ip:10809
 git config --global https.proxy http://$gateway_ip:10809
 ' >>.bashrc

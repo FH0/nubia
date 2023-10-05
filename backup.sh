@@ -82,6 +82,9 @@ rvm use 3.0.0 --default
 
 # rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+sed '/cargo/d' ~/.bashrc
+echo '. $HOME/.cargo/env' >>~/.bashrc
+. ~/.bashrc
 rustup target add aarch64-unknown-linux-musl \
     arm-unknown-linux-musleabi \
     mipsel-unknown-linux-musl \
