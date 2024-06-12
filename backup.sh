@@ -972,6 +972,12 @@ arm-linux-gnueabi-strip dropbear dropbearkey dropbearconvert dbclient
 rm -rf $(pwd)
 cd ..
 
+# dropbear
+curl -L 'https://github.com/mkj/dropbear/archive/refs/tags/DROPBEAR_2022.82.tar.gz' | tar xz
+cd dropbear-DROPBEAR_2022.82
+LDFLAGS='-s' ./configure --host=$host --enable-static --disable-zlib --disable-harden
+make -j$(nproc)
+
 # wsl2 kernel
 git clone https://github.com/microsoft/WSL2-Linux-Kernel.git
 cd WSL2-Linux-Kernel
@@ -1010,11 +1016,9 @@ cd ..
 opkg update &&
     opkg install nano vim bash tcpdump
 ## compile
-git clone https://github.com/coolsnowwolf/lede.git
-chown -R noroot:noroot lede
-chown o+x ~
-ln -sf ~/lede /home/noroot
+useradd noroot
 su - noroot
+git clone https://github.com/coolsnowwolf/lede.git --depth=1
 cd lede
 ./scripts/feeds update -a
 ./scripts/feeds install -a
@@ -1038,6 +1042,42 @@ cd rt-n56u/toolchain-mipsel
 cd ../trunk
 fakeroot ./build_firmware_modify PSG1218
 # curl -L "http://dynv6.com/api/update?hostname=compile.dynv6.net&token=idfqd8CMak8agnzyqCXwqp19Sihg47&ipv4=auto"
+
+# openwrt
+git clone https://github.com/openwrt/openwrt.git --branch=openwrt-23.05 --depth=1
+cd openwrt
+wget 'https://patch-diff.githubusercontent.com/raw/openwrt/openwrt/pull/14487.patch'
+patch -p1 <14487.patch
+./scripts/feeds update -a
+./scripts/feeds install -a
+make menuconfig -j$(nproc)
+# TARGET_ramips=y
+# TARGET_ramips_mt7621=y
+# TARGET_ramips_mt7621_DEVICE_jdcloud_re-cp-02=y
+# PACKAGE_luci=y
+FORCE_UNSAFE_CONFIGURE=1 \
+    make defconfig download clean world -j$(nproc)
+cat >/etc/opkg/distfeeds.conf <<EOF
+src/gz openwrt_core https://mirrors.ustc.edu.cn/openwrt/releases/23.05.3/targets/rockchip/armv8/packages
+src/gz openwrt_base https://mirrors.ustc.edu.cn/openwrt/releases/23.05.3/packages/aarch64_generic/base
+src/gz openwrt_luci https://mirrors.ustc.edu.cn/openwrt/releases/23.05.3/packages/aarch64_generic/luci
+src/gz openwrt_packages https://mirrors.ustc.edu.cn/openwrt/releases/23.05.3/packages/aarch64_generic/packages
+src/gz openwrt_routing https://mirrors.ustc.edu.cn/openwrt/releases/23.05.3/packages/aarch64_generic/routing
+src/gz openwrt_telephony https://mirrors.ustc.edu.cn/openwrt/releases/23.05.3/packages/aarch64_generic/telephony
+EOF
+mkdir -p /mnt/mmcblk0p1 && mount /dev/mmcblk0p1 /mnt/mmcblk0p1
+mkdir -p /mnt/mmcblk0p2 && mount /dev/mmcblk0p2 /mnt/mmcblk0p2
+mkdir -p /mnt/mmcblk0p3 && mount /dev/mmcblk0p3 /mnt/mmcblk0p3
+mkdir -p /mnt/mmcblk0p4 && mount /dev/mmcblk0p4 /mnt/mmcblk0p4
+mkdir -p /mnt/mmcblk0p5 && mount /dev/mmcblk0p5 /mnt/mmcblk0p5
+
+# vcpkg
+rm -rf /usr/local/vcpkg
+git clone https://github.com/microsoft/vcpkg --depth=1 /usr/local/vcpkg
+sed -i '/\/usr\/local\/vcpkg/d' ~/.bashrc
+echo 'export VCPKG_ROOT=/usr/local/vcpkg PATH=$PATH:$VCPKG_ROOT' >>~/.bashrc
+. ~/.bashrc
+bootstrap-vcpkg.sh
 
 # vim
 add-apt-repository ppa:jonathonf/vim

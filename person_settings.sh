@@ -29,10 +29,6 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 alias ls="ls --color=auto"
 alias grep="grep --color=auto"
 
-# change .bash_history record number(default: 500)
-export HISTSIZE=500000
-export HISTFILESIZE=500000
-
 # record command execution time
 export HISTTIMEFORMAT='%F %T  '
 
@@ -52,8 +48,21 @@ complete -d cd
 # remove windows path
 export PATH=$(echo -n "$PATH" | tr ':' '\n' | grep -Ev '^/mnt' | tr '\n' ':' | sed 's|:$||')
 
+# bash completion
+if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+   . /etc/bash_completion
+fi
+
 # clean console information
 clear
+EOF
+
+    sed -i '/HISTSIZE/d' .bashrc
+    sed -i '/HISTFILESIZE/d' .bashrc
+    cat >>.bashrc <<EOF
+# change .bash_history record number(default: 500)
+export HISTSIZE=500000
+export HISTFILESIZE=500000
 EOF
 
     if uname -r | grep -q 'WSL'; then
@@ -68,8 +77,8 @@ if [ -f "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe" ]; then
 else
     export no_proxy=localhost,127.0.0.1
 fi
-git config --global http.proxy http://$gateway_ip:10809
-git config --global https.proxy http://$gateway_ip:10809
+git config --replace-all --global http.proxy http://$gateway_ip:10809
+git config --replace-all --global https.proxy http://$gateway_ip:10809
 ' >>.bashrc
 
         (
